@@ -1,10 +1,10 @@
-# Project Idea: Elle Flowers — Elegance Delivered
+# Project Idea: GulBerry — Elegance Delivered
 
 ## Vision
-**Elle Flowers** is a boutique digital florist offering premium, handcrafted bouquets with the speed of modern logistics. Our vision is to combine the timeless beauty of floral art with a seamless, high-tech purchasing experience.
+**GulBerry** is a boutique digital florist offering premium, handcrafted bouquets with the speed of modern logistics. Our vision is to combine the timeless beauty of floral art with a seamless, high-tech purchasing experience.
 
 ## Core Identity
-- **Brand name**: Elle Flowers.
+- **Brand name**: GulBerry.
 - **Aesthetic**: Sophisticated, feminine, and clean. Leveraging a palette of lavender, purple, and soft rose.
 - **Promise**: "Your ideal bouquet delivered in 60 minutes."
 

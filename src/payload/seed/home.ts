@@ -5,7 +5,7 @@ export const home: Partial<Page> = {
   slug: 'home',
   _status: 'published',
   meta: {
-    title: 'Elle Flowers Boutique',
+    title: 'GulBerry Boutique',
     description: 'Fresh, premium handcrafted bouquets delivered with love.',
     image: '{{PRODUCT1_IMAGE}}',
   },
@@ -15,7 +15,7 @@ export const home: Partial<Page> = {
       {
         children: [
           {
-            text: 'Elle Flowers Boutique',
+            text: 'GulBerry Boutique',
           },
         ],
         type: 'h1',

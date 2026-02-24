@@ -1,4 +1,4 @@
-# Styles Guide — Elle Flowers
+# Styles Guide — GulBerry
 
 Living design system reference. Always loaded in AI context via `GEMINI.md`.
 
@@ -57,7 +57,7 @@ Living design system reference. Always loaded in AI context via `GEMINI.md`.
 ## Typography
 
 ### Fonts
-- **Display / Brand**: `Playfair Display` or `Jost` — script-like elegance for "Elle Flowers"
+- **Display / Brand**: `Playfair Display` or `Jost` — script-like elegance for "GulBerry"
 - **UI / Body**: `Inter` — clarity for labels and product descriptions
 
 ```scss
@@ -90,7 +90,7 @@ Living design system reference. Always loaded in AI context via `GEMINI.md`.
 
 ### Header
 
-- **Center Logo**: "Elle Flowers" in script typography
+- **Center Logo**: "GulBerry" in script typography
 - **Search Bar**: Pill-shaped, light lavender tint, "Search bouquet, gift..."
 - **Icons**: Minimalist line art (Menu, Cart, Profile)
 

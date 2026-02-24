@@ -1,6 +1,6 @@
 # Floral Dummy Data
 
-This folder contains a dedicated set of dummy data for the **Elle Flowers** boutique. It is designed to facilitate comprehensive testing of product filtering, search, and categorization.
+This folder contains a dedicated set of dummy data for the **GulBerry** boutique. It is designed to facilitate comprehensive testing of product filtering, search, and categorization.
 
 ## Contents
 

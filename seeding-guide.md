@@ -1,6 +1,6 @@
 # How to Seed Your Floral Shop Data
 
-To replace the legacy electronics data with the new **Elle Flowers** dummy data, follow these steps:
+To replace the legacy electronics data with the new **GulBerry** dummy data, follow these steps:
 
 ## Step 1: Run the Seed Command
 

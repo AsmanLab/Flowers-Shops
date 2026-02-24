@@ -5,7 +5,7 @@ export const cartPage: Partial<Page> = {
   slug: 'cart',
   _status: 'published',
   meta: {
-    title: 'Your Floral Cart | Elle Flowers',
+    title: 'Your Floral Cart | GulBerry',
     description: 'Review your selection of premium handcrafted bouquets and indoor plants before checkout.',
   },
   hero: {

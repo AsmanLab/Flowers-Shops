@@ -5,7 +5,7 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
   slug: 'products',
   _status: 'published',
   meta: {
-    title: 'Elle Flowers | All Collections',
+    title: 'GulBerry | All Collections',
     description: 'Explore our full range of handcrafted bouquets, indoor plants, and bespoke floral arrangements.',
   },
   hero: {

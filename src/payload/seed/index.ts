@@ -13,7 +13,7 @@ const collections = ['categories', 'media', 'pages', 'products']
 const globals = ['header', 'settings', 'footer']
 
 export const seed = async (payload: Payload): Promise<void> => {
-  payload.logger.info('Seeding database with Elle Flowers data...')
+  payload.logger.info('Seeding database with GulBerry data...')
 
   // Clear existing media
   const mediaDir = path.resolve(__dirname, '../../media')
@@ -209,5 +209,5 @@ export const seed = async (payload: Payload): Promise<void> => {
     } as any,
   })
 
-  payload.logger.info('Seeded database successfully with Elle Flowers dummy data!')
+  payload.logger.info('Seeded database successfully with GulBerry dummy data!')
 }
