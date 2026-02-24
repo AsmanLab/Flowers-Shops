@@ -3,10 +3,14 @@
 @use './type.scss' as *;
 @import "./theme.scss";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 :root {
   --base: 24px;
   --font-body: 'Jost', sans-serif;
   --font-jost: 'Jost', sans-serif;
+  --font-ui: var(--font-inter), 'Inter', sans-serif;
+  --font-display: 'Playfair Display', serif;
 
   --gutter-h: 180px;
   --block-padding: 120px;
@@ -30,6 +34,9 @@ html {
   @extend %body;
   background: var(--theme-bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
   opacity: 0;
 
   &[data-theme=dark],
@@ -58,14 +65,21 @@ body {
   flex: 1 1 auto;
 }
 
+// Focus ring — accessible and on-brand
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
 ::selection {
-  background: var(--color-dark-500);
-  color: var(--color-base-800);
+  background: var(--color-accent-dim);
+  color: var(--color-dark-500);
 }
 
 ::-moz-selection {
-  background: var(--color-dark-50);
-  color: var(--color-base-800);
+  background: var(--color-accent-dim);
+  color: var(--color-dark-500);
 }
 
 img {
@@ -112,6 +126,7 @@ ol {
 a {
   color: var(--color-dark-500);
   text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
 
   &:focus {
     opacity: .8;
@@ -126,4 +141,15 @@ a {
 
 svg {
   vertical-align: middle;
+}
+
+// Global smooth interact for interactive elements
+button,
+a,
+[role="button"] {
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+
+  &:active {
+    transform: scale(0.97);
+  }
 }

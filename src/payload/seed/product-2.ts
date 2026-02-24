@@ -1,13 +1,13 @@
 import type { Product } from '../payload-types'
 
 export const product2: Partial<Product> = {
-  title: 'E-Book',
+  title: 'Velvet Rose Arrangement',
   stripeProductID: '',
-  slug: 'ebook',
+  slug: 'velvet-rose',
   _status: 'published',
   meta: {
-    title: 'E-Book',
-    description: 'Make a one-time purchase for this digital asset.',
+    title: 'Velvet Rose Arrangement',
+    description: 'A luxurious arrangement of deep red roses in a porcelain vase.',
     image: '{{PRODUCT_IMAGE}}',
   },
   layout: [

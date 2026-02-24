@@ -2,8 +2,24 @@
 
 .footer {
   padding: calc(var(--base) * 4) 0;
-  background-color: var(--theme-elevation-1000);
-  color: var(--theme-elevation-0);
+  background: linear-gradient(180deg, rgba(19, 17, 24, 1) 0%, rgba(10, 9, 14, 1) 100%);
+  color: var(--color-white-500);
+  border-top: 1px solid var(--color-accent);
+  position: relative;
+  overflow: hidden;
+
+  // Subtle accent glow along the top border
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: var(--gradient-accent);
+    opacity: 0.6;
+    filter: blur(2px);
+  }
 
   @include small-break {
     padding: calc(var(--base) * 2) 0;
@@ -12,8 +28,7 @@
 
 :global([data-theme="dark"]) {
   .footer {
-    background-color: var(--theme-elevation-50);
-    color: var(--theme-elevation-1000);
+    background: linear-gradient(180deg, rgba(10, 9, 14, 1) 0%, rgba(5, 4, 7, 1) 100%);
   }
 }
 
@@ -26,6 +41,13 @@
 
 .logo {
   width: 150px;
+  opacity: 0.9;
+  transition: opacity var(--transition-fast);
+  filter: brightness(0) invert(1);
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .nav {
@@ -33,11 +55,34 @@
   gap: calc(var(--base) / 4) var(--base);
   align-items: center;
   flex-wrap: wrap;
-  opacity: 1;
-  transition: opacity 100ms linear;
-  visibility: visible;
 
-  > * {
+  >* {
     text-decoration: none;
+    color: var(--color-gray-500);
+    font-size: 14px;
+    font-family: var(--font-ui);
+    transition: color var(--transition-fast);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-base);
+    }
+
+    &:hover {
+      color: var(--color-accent);
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
   }
 }

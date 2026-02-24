@@ -13,5 +13,12 @@ module.exports = {
     base850: 'rgb(34, 34, 34)',
     base1000: 'rgb(0, 0, 0)',
     error500: 'rgb(255, 111, 118)',
+    // Brand
+    dark500: 'rgba(19, 17, 24, 1)',
+    purple500: 'rgba(124, 105, 239, 1)',
+    accent: 'rgba(124, 105, 239, 1)',
+    accentLight: 'rgba(175, 154, 251, 1)',
+    rose: '#F43F5E',
+    emerald: '#10B981',
   },
 }

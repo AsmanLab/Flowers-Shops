@@ -18,14 +18,33 @@
   max-height: 884px;
   display: flex;
   align-items: center;
+  position: relative;
 
   background-size: cover;
-  background-position: revert;
+  background-position: center;
   background-repeat: no-repeat;
+
+  // Dark overlay for text contrast
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        rgba(19, 17, 24, 0.70) 0%,
+        rgba(19, 17, 24, 0.35) 60%,
+        transparent 100%);
+    pointer-events: none;
+  }
 
   @include small-break {
     background-size: cover;
     background-position: center;
+
+    &::after {
+      background: linear-gradient(180deg,
+          rgba(19, 17, 24, 0.30) 0%,
+          rgba(19, 17, 24, 0.75) 100%);
+    }
   }
 }
 
@@ -35,6 +54,11 @@
   justify-content: center;
   padding: 15% var(--gutter-h);
   width: 100%;
+  position: relative;
+  z-index: 1;
+
+  // Staggered entrance animation
+  animation: heroFadeUp var(--transition-slow) ease-out forwards;
 
   @include mid-break {
     padding: 10% 30px;
@@ -47,31 +71,45 @@
   h2 {
     font-size: 70px;
     margin: 32px 0;
+    color: var(--color-white-500);
+    letter-spacing: -0.03em;
 
     @include mid-break {
       font-size: 48px;
       margin: 24px 0;
-      white-space: wrap;
     }
 
     @include small-break {
-      width: 70%;
+      width: 86%;
       font-size: 36px;
       margin: 8px 0;
     }
   }
 
   p {
-    font-size: 30px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 520px;
+    line-height: 1.6;
 
     @include mid-break {
-      font-size: 24px;
+      font-size: 18px;
     }
 
     @include small-break {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
+}
+
+// Optional overline above h2
+.overline {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 8px;
 }
 
 .links {
@@ -79,11 +117,23 @@
   margin: 0;
   padding: 0;
   display: flex;
-  padding-top: 50px;
+  padding-top: 40px;
   flex-wrap: wrap;
-  margin: calc(var(--base) * -0.5);
+  gap: calc(var(--base) / 2);
 
-  & > * {
-    margin: calc(var(--base) / 2);
+  animation: heroFadeUp var(--transition-slow) 120ms ease-out forwards;
+  opacity: 0;
+  animation-fill-mode: both;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -1,13 +1,13 @@
 import type { Product } from '../payload-types'
 
 export const product3: Partial<Product> = {
-  title: 'Online Course',
+  title: 'Spring Peony Mix',
   stripeProductID: '',
-  slug: 'Online Course',
+  slug: 'spring-peony',
   _status: 'published',
   meta: {
-    title: 'Online Course',
-    description: 'Make a one-time purchase to gain access to this content',
+    title: 'Spring Peony Mix',
+    description: 'A vibrant collection of spring peonies and ranunculus.',
     image: '{{PRODUCT_IMAGE}}',
   },
   layout: [

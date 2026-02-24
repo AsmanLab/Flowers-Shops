@@ -1,13 +1,13 @@
 import type { Product } from '../payload-types'
 
 export const product1: Partial<Product> = {
-  title: 'Cotton T-Shirt',
+  title: 'Lavender Dream Bouquet',
   stripeProductID: '',
-  slug: 'cotton-t',
+  slug: 'lavender-dream',
   _status: 'published',
   meta: {
-    title: 'Cotton T-Shirt',
-    description: 'Make a one-time purchase for this physical product.',
+    title: 'Lavender Dream Bouquet',
+    description: 'A premium handcrafted bouquet of fresh lavender and seasonal greens.',
     image: '{{PRODUCT_IMAGE}}',
   },
   layout: [

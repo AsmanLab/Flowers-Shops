@@ -5,9 +5,8 @@ export const cartPage: Partial<Page> = {
   slug: 'cart',
   _status: 'published',
   meta: {
-    title: 'Cart',
-    description:
-      'Your cart will sync to your user profile so you can continue shopping from any device.',
+    title: 'Your Floral Cart | Elle Flowers',
+    description: 'Review your selection of premium handcrafted bouquets and indoor plants before checkout.',
   },
   hero: {
     type: 'lowImpact',
@@ -18,7 +17,7 @@ export const cartPage: Partial<Page> = {
         type: 'h1',
         children: [
           {
-            text: 'Cart',
+            text: 'Your Cart',
           },
         ],
       },
@@ -26,17 +25,7 @@ export const cartPage: Partial<Page> = {
         type: 'p',
         children: [
           {
-            text: 'This cart saves to local storage so you can continue shopping later. Once you authenticate with Payload, your cart will sync to your user profile so you can continue shopping from any device. This hero and the content below the cart are completely dynamic and ',
-          },
-          {
-            type: 'link',
-            linkType: 'custom',
-            url: '/admin',
-            children: [
-              {
-                text: 'configured in the admin dashboard',
-              },
-            ],
+            text: 'Review your selected blooms below. Your cart is saved so you can continue exploring our collections and come back anytime.',
           },
         ],
       },
@@ -58,7 +47,15 @@ export const cartPage: Partial<Page> = {
             {
               children: [
                 {
-                  text: 'This is a custom layout building block configurable in the CMS—this can be anything you want. Related or suggested products, a blog post, video, etc.',
+                  text: 'Complete the Look',
+                },
+              ],
+              type: 'h3',
+            },
+            {
+              children: [
+                {
+                  text: 'Did you know you can add a personalized message card or special gift wrapping at checkout? Make your gift even more memorable with our premium finishing touches.',
                 },
               ],
             },
@@ -71,7 +68,7 @@ export const cartPage: Partial<Page> = {
         {
           children: [
             {
-              text: 'Continue shopping',
+              text: 'Looking for something else?',
             },
           ],
           type: 'h4',
@@ -79,20 +76,7 @@ export const cartPage: Partial<Page> = {
         {
           children: [
             {
-              text: 'This is a custom layout building block ',
-            },
-            {
-              type: 'link',
-              linkType: 'custom',
-              url: '/admin',
-              children: [
-                {
-                  text: 'configured in the admin dashboard',
-                },
-              ],
-            },
-            {
-              text: '.',
+              text: 'Continue browsing our seasonal favorites and find the perfect addition to your order.',
             },
           ],
         },
@@ -102,12 +86,12 @@ export const cartPage: Partial<Page> = {
           link: {
             type: 'reference',
             url: '',
-            reference: {
-              relationTo: 'pages',
-              value: '{{PRODUCTS_PAGE_ID}}',
-            },
-            label: 'Continue shopping',
+            label: 'Continue Shopping',
             appearance: 'primary',
+            reference: {
+              value: '{{PRODUCTS_PAGE_ID}}',
+              relationTo: 'pages',
+            },
           },
         },
       ],

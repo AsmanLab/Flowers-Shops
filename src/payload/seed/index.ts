@@ -4,179 +4,160 @@ import type { Payload } from 'payload'
 
 import { cartPage } from './cart-page'
 import { home } from './home'
-import { image1 } from './image-1'
-import { image2 } from './image-2'
-import { image3 } from './image-3'
-import { product1 } from './product-1'
-import { product2 } from './product-2'
-import { product3 } from './product-3'
+import { floralMedia } from './flowers/media'
+import { categories as floralCategories } from './flowers/categories'
+import { floralProducts } from './flowers/products'
 import { productsPage } from './products-page'
 
 const collections = ['categories', 'media', 'pages', 'products']
 const globals = ['header', 'settings', 'footer']
 
-// Next.js revalidation errors are normal when seeding the database without a server running
-// i.e. running `yarn seed` locally instead of using the admin UI within an active app
-// The app is not running to revalidate the pages and so the API routes are not available
-// These error messages can be ignored: `Error hitting revalidate route for...`
 export const seed = async (payload: Payload): Promise<void> => {
-  payload.logger.info('Seeding database...')
+  payload.logger.info('Seeding database with Elle Flowers data...')
 
-  // we need to clear the media directory before seeding
-  // as well as the collections and globals
-  // this is because while `yarn seed` drops the database
-  // the custom `/api/seed` endpoint does not
-
-  payload.logger.info(`— Clearing media...`)
-
+  // Clear existing media
   const mediaDir = path.resolve(__dirname, '../../media')
   if (fs.existsSync(mediaDir)) {
-    fs.rmdirSync(mediaDir, { recursive: true })
+    // Using rmSync (recursive: true replaces deprecated rmdirSync)
+    fs.rmSync(mediaDir, { recursive: true, force: true })
   }
 
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear the database
+  // Clear collections and globals
   await Promise.all([
     ...collections.map(async collection =>
       payload.delete({
         collection: collection as 'media',
         where: {},
       }),
-    ), // eslint-disable-line function-paren-newline
+    ),
     ...globals.map(async global =>
       payload.updateGlobal({
         slug: global as 'header',
         data: {},
       }),
-    ), // eslint-disable-line function-paren-newline
+    ),
   ])
 
-  payload.logger.info(`— Seeding media...`)
+  payload.logger.info(`— Seeding all floral media...`)
 
-  const [image1Doc, image2Doc, image3Doc] = await Promise.all([
-    await payload.create({
-      collection: 'media',
-      filePath: path.resolve(__dirname, 'image-1.jpg'),
-      data: image1,
-    }),
-    await payload.create({
-      collection: 'media',
-      filePath: path.resolve(__dirname, 'image-2.jpg'),
-      data: image2,
-    }),
-    await payload.create({
-      collection: 'media',
-      filePath: path.resolve(__dirname, 'image-3.jpg'),
-      data: image3,
-    }),
-  ])
+  // Seed all 6 floral media items, rotating through physical image files
+  const seededMedia = await Promise.all(
+    floralMedia.map(async (mediaData, index) => {
+      // Rotate through image-1.jpg, image-2.jpg, image-3.jpg
+      const imageNum = (index % 3) + 1
+      const imageFile = `image-${imageNum}.jpg`
 
-  let image1ID = image1Doc.id
-  let image2ID = image2Doc.id
-  let image3ID = image3Doc.id
+      return payload.create({
+        collection: 'media',
+        filePath: path.resolve(__dirname, imageFile),
+        data: mediaData as any,
+      })
+    })
+  )
 
-  if (payload.db.defaultIDType === 'text') {
-    image1ID = `"${image1ID}"`
-    image2ID = `"${image2ID}"`
-    image3ID = `"${image3ID}"`
+  const mediaIDs = seededMedia.map(doc => doc.id)
+
+  // Convenient refs for standard images (though we now have a full list)
+  const image1ID = mediaIDs[0]
+  const image2ID = mediaIDs[1]
+  const image3ID = mediaIDs[2]
+
+  payload.logger.info(`— Seeding floral categories...`)
+
+  const createdCategories = await Promise.all(
+    floralCategories.map(category =>
+      payload.create({
+        collection: 'categories',
+        data: category as any,
+      }),
+    ),
+  )
+
+  // Category mapping helpers
+  const getCategory = (title: string) => createdCategories.find(c => c.title === title) || createdCategories[0]
+
+  const categoriesMap = {
+    bouquets: getCategory('Fresh Bouquets'),
+    plants: getCategory('Indoor Plants'),
+    wedding: getCategory('Wedding Collection'),
+    sympathy: getCategory('Sympathy & Funeral'),
+    birthday: getCategory('Birthday Special'),
+    seasonal: getCategory('Seasonal Picks'),
+    corporate: getCategory('Corporate Gifting'),
+    dried: getCategory('Dried Flowers'),
   }
 
-  payload.logger.info(`— Seeding categories...`)
+  payload.logger.info(`— Seeding floral products...`)
 
-  const [apparelCategory, ebooksCategory, coursesCategory] = await Promise.all([
-    await payload.create({
-      collection: 'categories',
-      data: {
-        title: 'Apparel',
-      },
-    }),
-    await payload.create({
-      collection: 'categories',
-      data: {
-        title: 'E-books',
-      },
-    }),
-    await payload.create({
-      collection: 'categories',
-      data: {
-        title: 'Online courses',
-      },
-    }),
-  ])
+  const createdProducts = []
 
-  payload.logger.info(`— Seeding products...`)
+  // Create products sequentially to maintain order and handle dynamic replacements
+  for (let i = 0; i < floralProducts.length; i++) {
+    const productData = floralProducts[i]
+    let categoryToUse = categoriesMap.bouquets.id
+    let imageToUse = image1ID
 
-  // Do not create product with `Promise.all` because we want the products to be created in order
-  // This way we can sort them by `createdAt` or `publishedOn` and they will be in the expected order
-  const product1Doc = await payload.create({
-    collection: 'products',
-    data: JSON.parse(
-      JSON.stringify({ ...product1, categories: [apparelCategory.id] }).replace(
-        /"\{\{PRODUCT_IMAGE\}\}"/g,
-        image1ID,
-      ),
-    ),
-  })
+    const slug = productData.slug || ''
 
-  const product2Doc = await payload.create({
-    collection: 'products',
-    data: JSON.parse(
-      JSON.stringify({ ...product2, categories: [ebooksCategory.id] }).replace(
-        /"\{\{PRODUCT_IMAGE\}\}"/g,
-        image2ID,
-      ),
-    ),
-  })
+    // Robust keyword-based category assignment
+    if (slug.includes('plant') || slug.includes('monstera') || slug.includes('fern')) {
+      categoryToUse = categoriesMap.plants.id
+      imageToUse = mediaIDs[4 % mediaIDs.length] // Monstera image
+    } else if (slug.includes('wedding') || slug.includes('arch')) {
+      categoryToUse = categoriesMap.wedding.id
+      imageToUse = mediaIDs[5 % mediaIDs.length] // Wedding arch image
+    } else if (slug.includes('lily') || slug.includes('sympathy')) {
+      categoryToUse = categoriesMap.sympathy.id
+      imageToUse = mediaIDs[3 % mediaIDs.length] // White lily image
+    } else if (slug.includes('tulip') || slug.includes('peony')) {
+      categoryToUse = categoriesMap.seasonal.id
+      imageToUse = mediaIDs[2 % mediaIDs.length] // Spring peony image
+    } else if (slug.includes('rose')) {
+      imageToUse = mediaIDs[1 % mediaIDs.length] // Velvet rose image
+    }
 
-  const product3Doc = await payload.create({
-    collection: 'products',
-    data: JSON.parse(
-      JSON.stringify({ ...product3, categories: [coursesCategory.id] }).replace(
-        /"\{\{PRODUCT_IMAGE\}\}"/g,
-        image3ID,
-      ),
-    ),
-  })
+    // Replace all MEDIA_ID_X placeholders (1-6) and the PRODUCT_IMAGE placeholder
+    let productString = JSON.stringify({ ...productData, categories: [categoryToUse as any] })
 
-  // update each product with related products
+    mediaIDs.forEach((id, index) => {
+      const placeholder = `{{MEDIA_ID_${index + 1}}}`
+      productString = productString.replace(new RegExp(`"${placeholder}"`, 'g'), `"${id.toString()}"`)
+    })
 
-  await Promise.all([
-    await payload.update({
+    productString = productString.replace(/"\{\{PRODUCT_IMAGE\}\}"/g, `"${imageToUse.toString()}"`)
+
+    const productDoc = await payload.create({
       collection: 'products',
-      id: product1Doc.id,
-      data: {
-        relatedProducts: [product2Doc.id, product3Doc.id],
-      },
-    }),
-    await payload.update({
-      collection: 'products',
-      id: product2Doc.id,
-      data: {
-        relatedProducts: [product1Doc.id, product3Doc.id],
-      },
-    }),
-    await payload.update({
-      collection: 'products',
-      id: product3Doc.id,
-      data: {
-        relatedProducts: [product1Doc.id, product2Doc.id],
-      },
-    }),
-  ])
+      data: JSON.parse(productString) as any,
+    })
+
+    createdProducts.push(productDoc)
+  }
+
+  // Update related products (circular references for showcase)
+  await Promise.all(
+    createdProducts.map((product, index) => {
+      const nextProduct = createdProducts[(index + 1) % createdProducts.length]
+      const prevProduct = createdProducts[(index - 1 + createdProducts.length) % createdProducts.length]
+
+      return payload.update({
+        collection: 'products',
+        id: product.id,
+        data: {
+          relatedProducts: [nextProduct.id as any, prevProduct.id as any],
+        },
+      })
+    })
+  )
 
   payload.logger.info(`— Seeding products page...`)
 
   const productsPageDoc = await payload.create({
     collection: 'pages',
-    data: productsPage,
+    data: productsPage as any,
   })
-
-  let productsPageID = productsPageDoc.id
-
-  if (payload.db.defaultIDType === 'text') {
-    productsPageID = `"${productsPageID}"`
-  }
 
   payload.logger.info(`— Seeding home page...`)
 
@@ -184,9 +165,9 @@ export const seed = async (payload: Payload): Promise<void> => {
     collection: 'pages',
     data: JSON.parse(
       JSON.stringify(home)
-        .replace(/"\{\{PRODUCT1_IMAGE\}\}"/g, image1ID)
-        .replace(/"\{\{PRODUCT2_IMAGE\}\}"/g, image2ID)
-        .replace(/"\{\{PRODUCTS_PAGE_ID\}\}"/g, productsPageID),
+        .replace(/"\{\{PRODUCT1_IMAGE\}\}"/g, `"${image1ID.toString()}"`)
+        .replace(/"\{\{PRODUCT2_IMAGE\}\}"/g, `"${image2ID.toString()}"`)
+        .replace(/"\{\{PRODUCTS_PAGE_ID\}\}"/g, `"${productsPageDoc.id.toString()}"`) as any,
     ),
   })
 
@@ -195,8 +176,8 @@ export const seed = async (payload: Payload): Promise<void> => {
   await payload.create({
     collection: 'pages',
     data: JSON.parse(
-      JSON.stringify(cartPage).replace(/"\{\{PRODUCTS_PAGE_ID\}\}"/g, productsPageID),
-    ),
+      JSON.stringify(cartPage).replace(/"\{\{PRODUCTS_PAGE_ID\}\}"/g, `"${productsPageDoc.id.toString()}"`),
+    ) as any,
   })
 
   payload.logger.info(`— Seeding settings...`)
@@ -204,8 +185,8 @@ export const seed = async (payload: Payload): Promise<void> => {
   await payload.updateGlobal({
     slug: 'settings',
     data: {
-      productsPage: productsPageDoc.id,
-    },
+      productsPage: productsPageDoc.id as any,
+    } as any,
   })
 
   payload.logger.info(`— Seeding header...`)
@@ -219,14 +200,14 @@ export const seed = async (payload: Payload): Promise<void> => {
             type: 'reference',
             reference: {
               relationTo: 'pages',
-              value: productsPageDoc.id,
+              value: productsPageDoc.id as any,
             },
-            label: 'Shop',
+            label: 'Shop Collections',
           },
         },
-      ],
-    },
+      ] as any,
+    } as any,
   })
 
-  payload.logger.info('Seeded database successfully!')
+  payload.logger.info('Seeded database successfully with Elle Flowers dummy data!')
 }

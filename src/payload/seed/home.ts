@@ -5,8 +5,8 @@ export const home: Partial<Page> = {
   slug: 'home',
   _status: 'published',
   meta: {
-    title: 'Payload E-Commerce Template',
-    description: 'An open-source e-commerce store built with Payload and Next.js.',
+    title: 'Elle Flowers Boutique',
+    description: 'Fresh, premium handcrafted bouquets delivered with love.',
     image: '{{PRODUCT1_IMAGE}}',
   },
   hero: {
@@ -15,7 +15,7 @@ export const home: Partial<Page> = {
       {
         children: [
           {
-            text: 'Payload E-Commerce Store',
+            text: 'Elle Flowers Boutique',
           },
         ],
         type: 'h1',
@@ -23,34 +23,7 @@ export const home: Partial<Page> = {
       {
         children: [
           {
-            text: 'Welcome to your store! ',
-          },
-          {
-            type: 'link',
-            linkType: 'custom',
-            url: '/admin',
-            children: [
-              {
-                text: 'Visit the admin dashboard',
-              },
-            ],
-          },
-          {
-            text: " to begin managing this site's content. The code for this template is completely open-source and can be found ",
-          },
-          {
-            type: 'link',
-            linkType: 'custom',
-            url: 'https://github.com/payloadcms/payload/tree/main/templates/ecommerce',
-            newTab: true,
-            children: [
-              {
-                text: 'here',
-              },
-            ],
-          },
-          {
-            text: '.',
+            text: 'Experience the magic of fresh flowers. From everyday bouquets to bespoke wedding arrangements, we bring nature\'s beauty to your door.',
           },
         ],
         type: 'large-body',
@@ -65,18 +38,8 @@ export const home: Partial<Page> = {
             relationTo: 'pages',
             value: '{{PRODUCTS_PAGE_ID}}',
           },
-          label: 'Shop now',
+          label: 'Shop Now',
           url: '',
-        },
-      },
-      {
-        link: {
-          type: 'custom',
-          appearance: 'secondary',
-          reference: null,
-          label: 'View on GitHub',
-          url: 'https://github.com/payloadcms/payload/tree/main/templates/ecommerce',
-          newTab: true,
         },
       },
     ],
@@ -93,15 +56,28 @@ export const home: Partial<Page> = {
             {
               children: [
                 {
-                  text: 'Core Features',
+                  text: 'Our Services',
                 },
               ],
               type: 'h2',
             },
+          ],
+        },
+        {
+          size: 'oneThird',
+          richText: [
             {
               children: [
                 {
-                  text: '',
+                  text: 'Daily Freshness',
+                },
+              ],
+              type: 'h3',
+            },
+            {
+              children: [
+                {
+                  text: "Every stem is hand-selected each morning to ensure your bouquet stays vibrant and beautiful for as long as possible.",
                 },
               ],
             },
@@ -113,7 +89,7 @@ export const home: Partial<Page> = {
             {
               children: [
                 {
-                  text: 'Admin Dashboard',
+                  text: 'Wedding & Events',
                 },
               ],
               type: 'h3',
@@ -121,30 +97,11 @@ export const home: Partial<Page> = {
             {
               children: [
                 {
-                  text: "Manage this site's users, pages, products, and more from the ",
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/admin',
-                  children: [
-                    {
-                      text: 'admin dashboard',
-                    },
-                  ],
-                },
-                {
-                  text: '.',
+                  text: 'We create breathtaking floral arrangements for weddings, corporate events, and special celebrations tailored to your vision.',
                 },
               ],
             },
           ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
         },
         {
           size: 'oneThird',
@@ -152,7 +109,7 @@ export const home: Partial<Page> = {
             {
               children: [
                 {
-                  text: 'Authentication',
+                  text: 'Local Delivery',
                 },
               ],
               type: 'h3',
@@ -160,265 +117,11 @@ export const home: Partial<Page> = {
             {
               children: [
                 {
-                  text: 'User ',
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/login',
-                  children: [
-                    {
-                      text: 'login',
-                    },
-                  ],
-                },
-                {
-                  text: ' and ',
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/create-account',
-                  children: [
-                    {
-                      text: 'create account',
-                    },
-                  ],
-                },
-                {
-                  text: ' flows are complete with email verification and password reset.',
+                  text: 'Reliable same-day delivery across the city. Surprise your loved ones with a fresh delivery of joy.',
                 },
               ],
             },
           ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Customer Accounts',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Customers can ',
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/account',
-                  children: [
-                    {
-                      text: 'manage their account',
-                    },
-                  ],
-                },
-                {
-                  text: ', ',
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/orders',
-                  children: [
-                    {
-                      text: 'view their order history',
-                    },
-                  ],
-                },
-                {
-                  text: ', and more without leaving the site.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Paywall',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Easily gate digital content behind a paywall or require users to be logged in to access it.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Shopping Cart',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Shopping carts persist between sessions, can be saved for later, and are accessible from any device.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Checkout',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Secure in-app checkout powered by Stripe means your customers never have to leave your site.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Page Builder',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Custom page builder allows you to create unique page and product layouts for any type of content.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'SEO',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Editors have complete control over SEO data and site content directly from the ',
-                },
-                {
-                  type: 'link',
-                  linkType: 'custom',
-                  url: '/admin',
-                  children: [
-                    {
-                      text: 'admin dashboard',
-                    },
-                  ],
-                },
-                {
-                  text: '.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
-        },
-        {
-          size: 'oneThird',
-          richText: [
-            {
-              children: [
-                {
-                  text: 'Dark Mode',
-                },
-              ],
-              type: 'h3',
-            },
-            {
-              children: [
-                {
-                  text: 'Users will experience this site in their preferred color scheme, and each block can be inverted.',
-                },
-              ],
-            },
-          ],
-          enableLink: false,
-          link: {
-            reference: null,
-            url: '',
-            label: '',
-          },
         },
       ],
     },
@@ -436,7 +139,7 @@ export const home: Partial<Page> = {
           type: 'h4',
           children: [
             {
-              text: 'Recent Products',
+              text: 'Featured Bouquets',
             },
           ],
         },
@@ -444,7 +147,7 @@ export const home: Partial<Page> = {
           type: 'p',
           children: [
             {
-              text: 'The products below are displayed in an "Archive" layout building block which is an extremely powerful way to display documents on a page. It can be auto-populated by collection or by category, or products can be individually selected. Pagination controls will automatically appear if the number of results exceeds the number of items per page.',
+              text: 'Explore our latest collection of handcrafted arrangements. Filter by category to find the perfect bloom for every occasion.',
             },
           ],
         },
@@ -460,7 +163,7 @@ export const home: Partial<Page> = {
         {
           children: [
             {
-              text: 'Shop now',
+              text: 'Make Someone Smile Today',
             },
           ],
           type: 'h4',
@@ -468,20 +171,7 @@ export const home: Partial<Page> = {
         {
           children: [
             {
-              text: 'This is a custom layout building block ',
-            },
-            {
-              type: 'link',
-              linkType: 'custom',
-              url: '/admin',
-              children: [
-                {
-                  text: 'configured in the admin dashboard',
-                },
-              ],
-            },
-            {
-              text: '.',
+              text: 'Order a custom arrangement or choose from our curated seasonal picks.',
             },
           ],
         },
@@ -491,7 +181,7 @@ export const home: Partial<Page> = {
           link: {
             type: 'reference',
             url: '',
-            label: 'Shop now',
+            label: 'Shop Collection',
             appearance: 'primary',
             reference: {
               value: '{{PRODUCTS_PAGE_ID}}',

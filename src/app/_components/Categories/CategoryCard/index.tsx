@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { Category } from '../../../../payload/payload-types'
+import { Category, Media } from '../../../../payload/payload-types'
 import { useFilter } from '../../../_providers/Filter'
 
 import classes from './index.module.scss'
@@ -12,14 +12,14 @@ type CategoryCardProps = {
 }
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
-  const media = category.media as Media
+  const media = category.media as Media | null
   const { setCategoryFilters } = useFilter()
 
   return (
     <Link
       href="/products"
       className={classes.card}
-      style={{ backgroundImage: `url(${media.url})` }}
+      style={{ backgroundImage: media?.url ? `url(${media.url})` : 'none' }}
       onClick={() => setCategoryFilters([category.id])}
     >
       <p className={classes.title}>{category.title}</p>

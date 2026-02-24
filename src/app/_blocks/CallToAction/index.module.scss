@@ -6,26 +6,53 @@ $spacer-h: calc(var(--block-padding) / 2);
   padding-left: $spacer-h;
   padding-right: $spacer-h;
   position: relative;
-  background-color: var(--theme-elevation-100);
-  color: var(--theme-elevation-1000);
+  background-color: var(--color-dark-50);
+  color: var(--color-dark-500);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: box-shadow var(--transition-base);
+
+  // Left lavender accent bar
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--gradient-accent);
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
 }
 
 :global([data-theme="dark"]) {
   .callToAction {
-    background-color: var(--theme-elevation-0);
+    background-color: var(--theme-elevation-50);
     color: var(--theme-elevation-1000);
+
+    &::before {
+      opacity: 0.85;
+    }
   }
 }
 
 .invert {
-  background-color: var(--theme-elevation-1000);
-  color: var(--theme-elevation-0);
+  background: var(--gradient-primary);
+  color: var(--color-white-500);
+
+  &::before {
+    background: var(--gradient-accent);
+  }
 }
 
 :global([data-theme="dark"]) {
   .invert {
-    background-color: var(--theme-elevation-900);
-    color: var(--theme-elevation-0);
+    background: linear-gradient(135deg, rgba(10, 9, 14, 1) 0%, rgba(19, 17, 24, 1) 100%);
+    color: var(--color-white-500);
   }
 }
 
@@ -50,10 +77,9 @@ $spacer-h: calc(var(--block-padding) / 2);
   justify-content: center;
   height: 100%;
   flex-shrink: 0;
+  gap: calc(var(--base) / 2);
 
-  > * {
-    margin-bottom: calc(var(--base) / 2);
-
+  >* {
     &:last-child {
       margin-bottom: 0;
     }

@@ -5,8 +5,8 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
   slug: 'products',
   _status: 'published',
   meta: {
-    title: 'Shop all products',
-    description: 'Shop everything from goods and services to digital assets and gated content.',
+    title: 'Elle Flowers | All Collections',
+    description: 'Explore our full range of handcrafted bouquets, indoor plants, and bespoke floral arrangements.',
   },
   hero: {
     type: 'lowImpact',
@@ -16,7 +16,7 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
         type: 'h1',
         children: [
           {
-            text: 'All products',
+            text: 'All Collections',
           },
         ],
       },
@@ -24,7 +24,7 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
         type: 'p',
         children: [
           {
-            text: 'This page displays all or some of the products of your store ranging from goods and services to digital assets and gated content. Each product is complete with a dynamic page layout builder for a completely custom shopping experience that is under your full control.',
+            text: 'Browse through our seasonal selections and timeless classics. From vibrant birthday surprises to elegant sympathy tributes, find the perfect blooms for every story.',
           },
         ],
       },
@@ -39,7 +39,7 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
           type: 'h4',
           children: [
             {
-              text: 'All products',
+              text: 'Explore Botanical Excellence',
             },
           ],
         },
@@ -47,14 +47,14 @@ export const productsPage: Omit<Page, 'updatedAt' | 'createdAt' | 'id'> = {
           type: 'p',
           children: [
             {
-              text: 'The products below are displayed in an "Archive" layout building block which is an extremely powerful way to display docs on a page. It can be auto-populated by collection, filtered by category, and much more.',
+              text: 'Our arrangements are carefully curated by master florists using only the freshest stems. Filter by occasion or plant type to discover your next favorite piece.',
             },
           ],
         },
       ],
       populateBy: 'collection',
       relationTo: 'products',
-      limit: 10,
+      limit: 12,
       categories: [],
     },
   ],
