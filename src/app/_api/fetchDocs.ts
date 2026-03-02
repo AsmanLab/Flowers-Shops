@@ -35,8 +35,10 @@ export const fetchDocs = async <T>(
 
   let token: RequestCookie | undefined
 
+  const { cookies } = await import('next/headers')
+  const locale = cookies().get('locale')?.value || 'en'
+
   if (draft) {
-    const { cookies } = await import('next/headers')
     token = cookies().get(payloadToken)
   }
 
@@ -50,6 +52,9 @@ export const fetchDocs = async <T>(
     next: { tags: [collection] },
     body: JSON.stringify({
       query: queryMap[collection].query,
+      variables: {
+        locale,
+      },
     }),
   })
     ?.then(res => res.json())

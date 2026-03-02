@@ -13,6 +13,9 @@ import { Message } from '../../_components/Message'
 import { generateMeta } from '../../_utilities/generateMeta'
 import { CartPage } from './CartPage'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 import classes from './index.module.scss'
 
 // Force this page to be dynamic so that Next.js does not cache it
@@ -56,10 +59,14 @@ export default async function Cart() {
     // console.error(error)
   }
 
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   return (
     <div className={classes.container}>
       <Gutter>
-        <h3>Cart</h3>
+        <h3>{t.cart.title}</h3>
         <CartPage settings={settings} page={page} />
       </Gutter>
       <Blocks blocks={page?.layout} disableBottomPadding />

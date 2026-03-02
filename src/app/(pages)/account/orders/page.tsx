@@ -12,10 +12,17 @@ import { mergeOpenGraph } from '../../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../../_locales'
+
 export default async function Orders() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view your orders.',
+      t.orders.mustBeLoggedIn,
     )}&redirect=${encodeURIComponent('/orders')}`,
   })
 
@@ -43,9 +50,9 @@ export default async function Orders() {
 
   return (
     <div>
-      <h5>My Orders</h5>
+      <h5>{t.orders.title}</h5>
       {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-        <p className={classes.noOrders}>You have no orders.</p>
+        <p className={classes.noOrders}>{t.orders.noOrders}</p>
       )}
       <RenderParams />
       {orders && orders.length > 0 && (
@@ -54,23 +61,23 @@ export default async function Orders() {
             <li key={order.id} className={classes.order}>
               <Link className={classes.item} href={`/account/orders/${order.id}`}>
                 <div className={classes.itemContent}>
-                  <h6 className={classes.itemTitle}>{`Order ${order.id}`}</h6>
+                  <h6 className={classes.itemTitle}>{`${t.orders.order} ${order.id}`}</h6>
                   <div className={classes.itemMeta}>
                     <p>
-                      {'Total: '}
-                      {new Intl.NumberFormat('en-US', {
+                      {`${t.orders.total}: `}
+                      {new Intl.NumberFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {
                         style: 'currency',
                         currency: 'usd',
                       }).format(order.total / 100)}
                     </p>
-                    <p className={classes.orderDate}>{`Ordered On: ${formatDateTime(
+                    <p className={classes.orderDate}>{`${t.orders.orderedOn}: ${formatDateTime(
                       order.createdAt,
                     )}`}</p>
                   </div>
                 </div>
                 <Button
                   appearance="default"
-                  label="View Order"
+                  label={t.orders.viewOrder}
                   className={classes.button}
                   el="link"
                   href={`/account/orders/${order.id}`}
@@ -84,11 +91,17 @@ export default async function Orders() {
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Orders',
-  description: 'Your orders.',
-  openGraph: mergeOpenGraph({
-    title: 'Orders',
-    url: '/orders',
-  }),
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
+  return {
+    title: t.orders.title,
+    description: t.orders.noOrders,
+    openGraph: mergeOpenGraph({
+      title: t.orders.title,
+      url: '/orders',
+    }),
+  }
 }

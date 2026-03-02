@@ -14,6 +14,7 @@ import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
 import CartItem from '../CartItem'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 export const CartPage: React.FC<{
@@ -22,6 +23,7 @@ export const CartPage: React.FC<{
 }> = props => {
   const { settings } = props
   const { productsPage } = settings || {}
+  const { t } = useTranslation()
 
   const { user } = useAuth()
 
@@ -38,19 +40,19 @@ export const CartPage: React.FC<{
         <Fragment>
           {cartIsEmpty ? (
             <div className={classes.empty}>
-              Your cart is empty.
+              {t('cart.empty')}
               {typeof productsPage === 'object' && productsPage?.slug && (
                 <Fragment>
                   {' '}
-                  <Link href={`/${productsPage.slug}`}>Click here</Link>
-                  {` to shop.`}
+                  <Link href={`/${productsPage.slug}`}>{t('cart.clickHere')}</Link>
+                  {t('cart.toShop')}
                 </Fragment>
               )}
               {!user && (
                 <Fragment>
                   {' '}
-                  <Link href={`/login?redirect=%2Fcart`}>Log in</Link>
-                  {` to view a saved cart.`}
+                  <Link href={`/login?redirect=%2Fcart`}>{t('cart.login')}</Link>
+                  {t('cart.toViewSavedCart')}
                 </Fragment>
               )}
             </div>
@@ -59,13 +61,13 @@ export const CartPage: React.FC<{
               <div>
                 {/* CART LIST HEADER */}
                 <div className={classes.header}>
-                  <p>Products</p>
+                  <p>{t('cart.products')}</p>
                   <div className={classes.headerItemDetails}>
                     <p></p>
                     <p></p>
-                    <p>Quantity</p>
+                    <p>{t('cart.quantity')}</p>
                   </div>
-                  <p className={classes.headersubtotal}>Subtotal</p>
+                  <p className={classes.headersubtotal}>{t('cart.subtotal')}</p>
                 </div>
                 {/* CART ITEM LIST */}
                 <ul className={classes.itemsList}>
@@ -83,6 +85,7 @@ export const CartPage: React.FC<{
 
                       return (
                         <CartItem
+                          key={id}
                           product={product}
                           title={title}
                           metaImage={metaImage}
@@ -98,23 +101,23 @@ export const CartPage: React.FC<{
 
               <div className={classes.summary}>
                 <div className={classes.row}>
-                  <h6 className={classes.cartTotal}>Summary</h6>
+                  <h6 className={classes.cartTotal}>{t('cart.summary')}</h6>
                 </div>
 
                 <div className={classes.row}>
-                  <p className={classes.cartTotal}>Delivery Charge</p>
-                  <p className={classes.cartTotal}>$0</p>
+                  <p className={classes.cartTotal}>{t('cart.deliveryCharge')}</p>
+                  <p className={classes.cartTotal}>{t('cart.free')}</p>
                 </div>
 
                 <div className={classes.row}>
-                  <p className={classes.cartTotal}>Grand Total</p>
+                  <p className={classes.cartTotal}>{t('cart.grandTotal')}</p>
                   <p className={classes.cartTotal}>{cartTotal.formatted}</p>
                 </div>
 
                 <Button
                   className={classes.checkoutButton}
                   href={user ? '/checkout' : '/login?redirect=%2Fcheckout'}
-                  label={user ? 'Checkout' : 'Login to checkout'}
+                  label={user ? t('cart.checkout') : t('cart.loginToCheckout')}
                   appearance="primary"
                 />
               </div>

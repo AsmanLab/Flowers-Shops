@@ -5,15 +5,19 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { Header } from '../../../payload/payload-types'
+import type { Header as HeaderType } from '../../../payload/payload-types'
 import { fetchHeader } from '../../_api/fetchGlobals'
 import HeaderComponent from './HeaderComponent'
 
+import { cookies } from 'next/headers'
+
 export async function Header() {
-  let header: Header | null = null
+  const cookieStore = cookies()
+  const locale = cookieStore.get('locale')?.value || 'en'
+  let header: HeaderType | null = null
 
   try {
-    header = await fetchHeader()
+    header = await fetchHeader(locale)
   } catch (error) {
     console.log(error)
   }

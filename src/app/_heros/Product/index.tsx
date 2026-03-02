@@ -6,6 +6,7 @@ import { Gutter } from '../../_components/Gutter'
 import { Media } from '../../_components/Media'
 import { Price } from '../../_components/Price'
 
+import { useTranslation } from '../../_providers/Translate'
 import classes from './index.module.scss'
 
 export const ProductHero: React.FC<{
@@ -13,10 +14,12 @@ export const ProductHero: React.FC<{
 }> = ({ product }) => {
   const { title, categories, meta: { image: metaImage, description } = {} } = product
 
+  const { t } = useTranslation()
+
   return (
     <Gutter className={classes.productHero}>
       <div className={classes.mediaWrapper}>
-        {!metaImage && <div className={classes.placeholder}>No image</div>}
+        {!metaImage && <div className={classes.placeholder}>{t('cart.noImage')}</div>}
         {metaImage && typeof metaImage !== 'string' && (
           <Media imgClassName={classes.image} resource={metaImage} fill />
         )}
@@ -30,7 +33,7 @@ export const ProductHero: React.FC<{
             {categories?.map((category, index) => {
               const { title: categoryTitle } = category as Category
 
-              const titleToUse = categoryTitle || 'Generic'
+              const titleToUse = categoryTitle || t('general.generic')
               const isLast = index === categories.length - 1
 
               return (
@@ -41,13 +44,13 @@ export const ProductHero: React.FC<{
               )
             })}
           </div>
-          <p className={classes.stock}> In stock</p>
+          <p className={classes.stock}> {t('products.inStock')}</p>
         </div>
 
         <Price product={product} button={false} />
 
         <div className={classes.description}>
-          <h6>Description</h6>
+          <h6>{t('products.description')}</h6>
           <p>{description}</p>
         </div>
 

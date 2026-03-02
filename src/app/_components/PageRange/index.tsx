@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { useTranslation } from '../../_providers/Translate'
 
 import classes from './index.module.scss'
 
@@ -41,12 +44,14 @@ export const PageRange: React.FC<{
   const { singular, plural } =
     collectionLabelsFromProps || defaultCollectionLabels[collection || ''] || defaultLabels || {}
 
+  const { t } = useTranslation()
+
   return (
     <div className={[className, classes.pageRange].filter(Boolean).join(' ')}>
-      {(typeof totalDocs === 'undefined' || totalDocs === 0) && 'Search produced no results.'}
+      {(typeof totalDocs === 'undefined' || totalDocs === 0) && t('products.noResults')}
       {typeof totalDocs !== 'undefined' &&
         totalDocs > 0 &&
-        `Showing ${indexStart} - ${indexEnd} of ${totalDocs} ${totalDocs > 1 ? plural : singular}`}
+        `${t('products.showing')} ${indexStart} - ${indexEnd} ${t('general.of')} ${totalDocs} ${totalDocs > 1 ? plural : singular}`}
     </div>
   )
 }

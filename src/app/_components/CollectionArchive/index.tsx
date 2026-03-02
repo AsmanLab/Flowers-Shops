@@ -10,6 +10,7 @@ import { Card } from '../Card'
 import { PageRange } from '../PageRange'
 import { Pagination } from '../Pagination'
 
+import { useTranslation } from '../../_providers/Translate'
 import classes from './index.module.scss'
 
 type Result = {
@@ -37,6 +38,7 @@ export type Props = {
 
 export const CollectionArchive: React.FC<Props> = props => {
   const { categoryFilters, sort } = useFilter()
+  const { t } = useTranslation()
 
   const {
     className,
@@ -96,13 +98,13 @@ export const CollectionArchive: React.FC<Props> = props => {
         where: {
           ...(categoryFilters && categoryFilters?.length > 0
             ? {
-                categories: {
-                  in:
-                    typeof categoryFilters === 'string'
-                      ? [categoryFilters]
-                      : categoryFilters.map((cat: string) => cat).join(','),
-                },
-              }
+              categories: {
+                in:
+                  typeof categoryFilters === 'string'
+                    ? [categoryFilters]
+                    : categoryFilters.map((cat: string) => cat).join(','),
+              },
+            }
             : {}),
         },
         limit,
@@ -133,7 +135,7 @@ export const CollectionArchive: React.FC<Props> = props => {
       } catch (err) {
         console.warn(err) // eslint-disable-line no-console
         setIsLoading(false)
-        setError(`Unable to load "${relationTo} archive" data at this time.`)
+        setError(t('products.unableToLoad'))
       }
     }
 

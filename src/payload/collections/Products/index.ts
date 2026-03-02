@@ -18,9 +18,15 @@ const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'stripeProductID', '_status'],
-    preview: doc => {
+    preview: (doc, { locale }) => {
+      const localeCode = typeof locale === 'string' ? locale : locale?.code
+
+      const path = `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/products/${doc.slug}${
+        localeCode ? `?locale=${localeCode}` : ''
+      }`
+
       return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/preview?url=${encodeURIComponent(
-        `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/products/${doc.slug}`,
+        path,
       )}&secret=${process.env.PAYLOAD_PUBLIC_DRAFT_SECRET}`
     },
   },
@@ -44,6 +50,7 @@ const Products: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'publishedOn',
@@ -74,6 +81,7 @@ const Products: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
+              localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive],
             },
           ],
@@ -110,6 +118,7 @@ const Products: CollectionConfig = {
               name: 'paywall',
               label: 'Paywall',
               type: 'blocks',
+              localized: true,
               access: {
                 read: checkUserPurchases,
               },

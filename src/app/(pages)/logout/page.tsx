@@ -9,7 +9,14 @@ import { LogoutPage } from './LogoutPage'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function Logout() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   let settings: Settings | null = null
 
   try {

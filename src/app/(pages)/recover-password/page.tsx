@@ -10,7 +10,14 @@ import { RecoverPasswordForm } from './RecoverPasswordForm'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function RecoverPassword() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   return (
     <section className={classes.recoverPassword}>
       <div className={classes.heroImg}>
@@ -31,10 +38,10 @@ export default async function RecoverPassword() {
 
           <Link href="/login" className={classes.backLink}>
             <Image src="/assets/icons/arrow-left.svg" alt="left arrow" width={24} height={24} />
-            <p>Back</p>
+            <p>{t.auth.back}</p>
           </Link>
           <div className={classes.formTitle}>
-            <h3>Forgot Password</h3>
+            <h3>{t.auth.forgotPassword}</h3>
           </div>
           <RecoverPasswordForm />
         </div>
@@ -43,11 +50,17 @@ export default async function RecoverPassword() {
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Recover Password',
-  description: 'Enter your email address to recover your password.',
-  openGraph: mergeOpenGraph({
-    title: 'Recover Password',
-    url: '/recover-password',
-  }),
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
+  return {
+    title: t.auth.forgotPassword,
+    description: t.auth.recoverPasswordDescription,
+    openGraph: mergeOpenGraph({
+      title: t.auth.forgotPassword,
+      url: '/recover-password',
+    }),
+  }
 }

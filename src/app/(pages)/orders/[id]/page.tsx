@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { Order } from '../../../../payload/payload-types'
+import type { Order as OrderType } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { Gutter } from '../../../_components/Gutter'
 import { HR } from '../../../_components/HR'
@@ -15,14 +15,21 @@ import { mergeOpenGraph } from '../../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../../_locales'
+
 export default async function Order({ params: { id } }) {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view this order.',
+      t.orders.mustBeLoggedIn,
     )}&redirect=${encodeURIComponent(`/order/${id}`)}`,
   })
 
-  let order: Order | null = null
+  let order: OrderType | null = null
 
   try {
     order = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${id}`, {
@@ -48,16 +55,16 @@ export default async function Order({ params: { id } }) {
   return (
     <Gutter className={classes.orders}>
       <h1>
-        {`Order`}
-        <span className={classes.id}>{`${order.id}`}</span>
+        {t.orders.order}
+        <span className={classes.id}>{` ${order.id}`}</span>
       </h1>
       <div className={classes.itemMeta}>
-        <p>{`ID: ${order.id}`}</p>
-        <p>{`Payment Intent: ${order.stripePaymentIntentID}`}</p>
-        <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
+        <p>{`${t.orders.orderID}: ${order.id}`}</p>
+        <p>{`${t.orders.paymentIntent}: ${order.stripePaymentIntentID}`}</p>
+        <p>{`${t.orders.orderedOn}: ${formatDateTime(order.createdAt)}`}</p>
         <p className={classes.total}>
-          {'Total: '}
-          {new Intl.NumberFormat('en-US', {
+          {`${t.orders.total}: `}
+          {new Intl.NumberFormat(locale, {
             style: 'currency',
             currency: 'usd',
           }).format(order.total / 100)}
@@ -65,7 +72,7 @@ export default async function Order({ params: { id } }) {
       </div>
       <HR />
       <div className={classes.order}>
-        <h4 className={classes.orderItems}>Items</h4>
+        <h4 className={classes.orderItems}>{t.orders.items}</h4>
         {order.items?.map((item, index) => {
           if (typeof item.product === 'object') {
             const {
@@ -82,7 +89,7 @@ export default async function Order({ params: { id } }) {
               <Fragment key={index}>
                 <div className={classes.row}>
                   <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
-                    {!metaImage && <span className={classes.placeholder}>No image</span>}
+                    {!metaImage && <span className={classes.placeholder}>{t.cart.noImage}</span>}
                     {metaImage && typeof metaImage !== 'string' && (
                       <Media
                         className={classes.media}
@@ -95,11 +102,11 @@ export default async function Order({ params: { id } }) {
                   <div className={classes.rowContent}>
                     {!stripeProductID && (
                       <p className={classes.warning}>
-                        {'This product is not yet connected to Stripe. To link this product, '}
+                        {t.orders.stripeWarning}
                         <Link
                           href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/collections/products/${id}`}
                         >
-                          edit this product in the admin panel
+                          {t.orders.editInAdmin}
                         </Link>
                         {'.'}
                       </p>
@@ -109,7 +116,7 @@ export default async function Order({ params: { id } }) {
                         {title}
                       </Link>
                     </h5>
-                    <p>{`Quantity: ${quantity}`}</p>
+                    <p>{`${t.orders.quantity}: ${quantity}`}</p>
                     <Price product={product} button={false} quantity={quantity} />
                   </div>
                 </div>
@@ -123,19 +130,23 @@ export default async function Order({ params: { id } }) {
       </div>
       <HR />
       <div className={classes.actions}>
-        <Button href="/orders" appearance="primary" label="See all orders" />
-        <Button href="/account" appearance="secondary" label="Go to account" />
+        <Button href="/orders" appearance="primary" label={t.orders.viewAllOrders} />
+        <Button href="/account" appearance="secondary" label={t.orders.viewAccount} />
       </div>
     </Gutter>
   )
 }
 
 export async function generateMetadata({ params: { id } }): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   return {
-    title: `Order ${id}`,
-    description: `Order details for order ${id}.`,
+    title: `${t.orders.order} ${id}`,
+    description: `${t.orders.order} ${id}`,
     openGraph: mergeOpenGraph({
-      title: `Order ${id}`,
+      title: `${t.orders.order} ${id}`,
       url: `/orders/${id}`,
     }),
   }

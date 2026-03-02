@@ -16,6 +16,7 @@ import cssVariables from '../../../cssVariables'
 import { CheckoutForm } from '../CheckoutForm'
 import { CheckoutItem } from '../CheckoutItem'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 const apiKey = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
@@ -43,6 +44,8 @@ export const CheckoutPage: React.FC<{
     }
   }, [router, user, cartIsEmpty])
 
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (user && cart && hasMadePaymentIntent.current === false) {
       hasMadePaymentIntent.current = true
@@ -66,13 +69,13 @@ export const CheckoutPage: React.FC<{
             setClientSecret(res.client_secret)
           }
         } catch (e) {
-          setError('Something went wrong.')
+          setError(t('checkout.somethingWentWrong'))
         }
       }
 
       makeIntent()
     }
-  }, [cart, user])
+  }, [cart, user, t])
 
   if (!user || !stripe) return null
 
@@ -80,13 +83,10 @@ export const CheckoutPage: React.FC<{
     <Fragment>
       {cartIsEmpty && (
         <div>
-          {'Your '}
-          <Link href="/cart">cart</Link>
-          {' is empty.'}
+          {t('cart.empty')}{' '}
           {typeof productsPage === 'object' && productsPage?.slug && (
             <Fragment>
-              {' '}
-              <Link href={`/${productsPage.slug}`}>Continue shopping?</Link>
+              <Link href={`/${productsPage.slug}`}>{t('products.continueShopping')}</Link>
             </Fragment>
           )}
         </div>
@@ -94,12 +94,12 @@ export const CheckoutPage: React.FC<{
       {!cartIsEmpty && (
         <div className={classes.items}>
           <div className={classes.header}>
-            <p>Products</p>
+            <p>{t('cart.products')}</p>
             <div className={classes.headerItemDetails}>
               <p></p>
-              <p className={classes.quantity}>Quantity</p>
+              <p className={classes.quantity}>{t('cart.quantity')}</p>
             </div>
-            <p className={classes.subtotal}>Subtotal</p>
+            <p className={classes.subtotal}>{t('cart.subtotal')}</p>
           </div>
 
           <ul>
@@ -130,7 +130,7 @@ export const CheckoutPage: React.FC<{
               return null
             })}
             <div className={classes.orderTotal}>
-              <p>Order Total</p>
+              <p>{t('checkout.orderTotal')}</p>
               <p>{cartTotal.formatted}</p>
             </div>
           </ul>
@@ -143,14 +143,14 @@ export const CheckoutPage: React.FC<{
       )}
       {!clientSecret && error && (
         <div className={classes.error}>
-          <p>{`Error: ${error}`}</p>
-          <Button label="Back to cart" href="/cart" appearance="secondary" />
+          <p>{`${t('general.error')}: ${error}`}</p>
+          <Button label={t('checkout.backToCart')} href="/cart" appearance="secondary" />
         </div>
       )}
       {clientSecret && (
         <Fragment>
-          <h3 className={classes.payment}>Payment Details</h3>
-          {error && <p>{`Error: ${error}`}</p>}
+          <h3 className={classes.payment}>{t('checkout.paymentDetails')}</h3>
+          {error && <p>{`${t('general.error')}: ${error}`}</p>}
           <Elements
             stripe={stripe}
             options={{

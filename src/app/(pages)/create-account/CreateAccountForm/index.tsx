@@ -10,6 +10,7 @@ import { Input } from '../../../_components/Input'
 import { Message } from '../../../_components/Message'
 import { useAuth } from '../../../_providers/Auth'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 type FormData = {
@@ -26,6 +27,8 @@ const CreateAccountForm: React.FC = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const { t } = useTranslation()
 
   const {
     register,
@@ -48,7 +51,7 @@ const CreateAccountForm: React.FC = () => {
       })
 
       if (!response.ok) {
-        const message = response.statusText || 'There was an error creating the account.'
+        const message = response.statusText || t('auth.createAccountError')
         setError(message)
         return
       }
@@ -67,23 +70,23 @@ const CreateAccountForm: React.FC = () => {
         window.location.href = '/'
       } catch (_) {
         clearTimeout(timer)
-        setError('There was an error with the credentials provided. Please try again.')
+        setError(t('auth.loginError'))
       }
     },
-    [login, router, searchParams],
+    [login, router, searchParams, t],
   )
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <p>
-        {`This is where new customers can signup and create a new account. To manage all users, `}
-        <Link href="/admin/collections/users">login to the admin dashboard</Link>
+        {t('auth.signupDescription')}
+        <Link href="/admin/collections/users">{t('auth.adminDashboardLink')}</Link>
         {'.'}
       </p>
       <Message error={error} className={classes.message} />
       <Input
         name="email"
-        label="Email Address"
+        label={t('auth.email')}
         required
         register={register}
         error={errors.email}
@@ -91,7 +94,7 @@ const CreateAccountForm: React.FC = () => {
       />
       <Input
         name="name"
-        label="Full name"
+        label={t('auth.fullName')}
         required
         register={register}
         error={errors.name}
@@ -100,7 +103,7 @@ const CreateAccountForm: React.FC = () => {
       <Input
         name="password"
         type="password"
-        label="Password"
+        label={t('auth.password')}
         required
         register={register}
         error={errors.password}
@@ -108,22 +111,22 @@ const CreateAccountForm: React.FC = () => {
       <Input
         name="passwordConfirm"
         type="password"
-        label="Confirm Password"
+        label={t('auth.confirmPassword')}
         required
         register={register}
-        validate={value => value === password.current || 'The passwords do not match'}
+        validate={value => value === password.current || t('auth.passwordsDoNotMatch')}
         error={errors.passwordConfirm}
       />
       <Button
         type="submit"
-        label={loading ? 'Processing' : 'Sign up'}
+        label={loading ? t('auth.processing') : t('auth.signup')}
         disabled={loading}
         appearance="primary"
         className={classes.submit}
       />
       <div>
-        {'Already have an account? '}
-        <Link href={`/login${allParams}`}>Login</Link>
+        {t('auth.alreadyHaveAccount')}
+        <Link href={`/login${allParams}`}>{t('auth.loginLink')}</Link>
       </div>
     </form>
   )

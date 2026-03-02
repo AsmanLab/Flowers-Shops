@@ -34,8 +34,10 @@ export const fetchDoc = async <T>(args: {
 
   let token: RequestCookie | undefined
 
+  const { cookies } = await import('next/headers')
+  const locale = cookies().get('locale')?.value || 'en'
+
   if (draft) {
-    const { cookies } = await import('next/headers')
     token = cookies().get(payloadToken)
   }
 
@@ -52,6 +54,7 @@ export const fetchDoc = async <T>(args: {
       variables: {
         slug,
         draft,
+        locale,
       },
     }),
   })

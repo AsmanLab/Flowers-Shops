@@ -146,4 +146,9 @@ export default buildConfig({
     }),
     payloadCloud(),
   ],
+  localization: {
+    locales: ['en', 'ru'],
+    defaultLocale: 'en',
+    fallback: true,
+  },
 })

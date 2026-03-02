@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 import { Settings } from '../../../../payload/payload-types'
 import { useAuth } from '../../../_providers/Auth'
+import { useTranslation } from '../../../_providers/Translate'
 
 export const LogoutPage: React.FC<{
   settings: Settings
@@ -14,19 +15,20 @@ export const LogoutPage: React.FC<{
   const { logout } = useAuth()
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  const { t } = useTranslation()
 
   useEffect(() => {
     const performLogout = async () => {
       try {
         await logout()
-        setSuccess('Logged out successfully.')
+        setSuccess(t('auth.logoutSuccess'))
       } catch (_) {
-        setError('You are already logged out.')
+        setError(t('auth.alreadyLoggedOut'))
       }
     }
 
     performLogout()
-  }, [logout])
+  }, [logout, t])
 
   return (
     <Fragment>
@@ -34,16 +36,16 @@ export const LogoutPage: React.FC<{
         <div>
           <h1>{error || success}</h1>
           <p>
-            {'What would you like to do next?'}
+            {t('auth.whatNext')}
             {typeof productsPage === 'object' && productsPage?.slug && (
               <Fragment>
                 {' '}
-                <Link href={`/${productsPage.slug}`}>Click here</Link>
-                {` to shop.`}
+                <Link href={`/${productsPage.slug}`}>{t('auth.shopLink')}</Link>
+                {t('auth.toShop')}
               </Fragment>
             )}
-            {` To log back in, `}
-            <Link href="/login">click here</Link>
+            {t('auth.toLogBackIn')}
+            <Link href="/login">{t('auth.loginLink').toLowerCase()}</Link>
             {'.'}
           </p>
         </div>

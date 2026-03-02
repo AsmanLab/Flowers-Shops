@@ -5,32 +5,10 @@ import Link from 'next/link'
 
 import { Product } from '../../../payload/payload-types'
 import { Media } from '../Media'
-import { Price } from '../Price'
+import { Price, priceFromJSON } from '../Price'
 
+import { useTranslation } from '../../_providers/Translate'
 import classes from './index.module.scss'
-
-const priceFromJSON = (priceJSON): string => {
-  let price = ''
-
-  if (priceJSON) {
-    try {
-      const parsed = JSON.parse(priceJSON)?.data[0]
-      const priceValue = parsed.unit_amount
-      const priceType = parsed.type
-      price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`
-      if (priceType === 'recurring') {
-        price += `/${parsed.recurring.interval_count > 1
-            ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
-            : parsed.recurring.interval
-          }`
-      }
-    } catch (e) {
-      console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
-    }
-  }
-
-  return price
-}
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -56,19 +34,21 @@ export const Card: React.FC<{
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
   const href = `/products/${slug}`
 
+  const { t, locale } = useTranslation()
+
   const [
     price, // eslint-disable-line no-unused-vars
     setPrice,
-  ] = useState(() => priceFromJSON(priceJSON))
+  ] = useState(() => priceFromJSON(priceJSON, 1, false, locale))
 
   useEffect(() => {
-    setPrice(priceFromJSON(priceJSON))
-  }, [priceJSON])
+    setPrice(priceFromJSON(priceJSON, 1, false, locale))
+  }, [priceJSON, locale])
 
   return (
     <Link href={href} className={[classes.card, className].filter(Boolean).join(' ')}>
       <div className={classes.mediaWrapper}>
-        {!metaImage && <div className={classes.placeholder}>No image</div>}
+        {!metaImage && <div className={classes.placeholder}>{t('cart.noImage')}</div>}
         {metaImage && typeof metaImage !== 'string' && (
           <Media imgClassName={classes.image} resource={metaImage} fill />
         )}

@@ -13,6 +13,7 @@ import React, {
 import { Product, User } from '../../../payload/payload-types'
 import { useAuth } from '../Auth'
 import { CartItem, cartReducer } from './reducer'
+import { useTranslation } from '../Translate'
 
 export type CartContext = {
   cart: User['cart']
@@ -45,6 +46,7 @@ export const CartProvider = props => {
   // const { setTimedNotification } = useNotifications();
   const { children } = props
   const { user, status: authStatus } = useAuth()
+  const { locale } = useTranslation()
 
   const [cart, dispatchCart] = useReducer(cartReducer, {
     items: [],
@@ -233,19 +235,19 @@ export const CartProvider = props => {
           acc +
           (typeof item.product === 'object'
             ? JSON.parse(item?.product?.priceJSON || '{}')?.data?.[0]?.unit_amount *
-              (typeof item?.quantity === 'number' ? item?.quantity : 0)
+            (typeof item?.quantity === 'number' ? item?.quantity : 0)
             : 0)
         )
       }, 0) || 0
 
     setTotal({
-      formatted: (newTotal / 100).toLocaleString('en-US', {
+      formatted: (newTotal / 100).toLocaleString(locale === 'ru' ? 'ru-RU' : 'en-US', {
         style: 'currency',
         currency: 'USD',
       }),
       raw: newTotal,
     })
-  }, [cart, hasInitialized])
+  }, [cart, hasInitialized, locale])
 
   return (
     <Context.Provider

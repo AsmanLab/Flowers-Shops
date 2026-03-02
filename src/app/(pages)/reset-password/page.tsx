@@ -7,21 +7,34 @@ import { ResetPasswordForm } from './ResetPasswordForm'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function ResetPassword() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   return (
     <Gutter className={classes.resetPassword}>
-      <h1>Reset Password</h1>
-      <p>Please enter a new password below.</p>
+      <h1>{t.auth.resetPasswordTitle}</h1>
+      <p>{t.auth.resetPasswordDescription}</p>
       <ResetPasswordForm />
     </Gutter>
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Reset Password',
-  description: 'Enter a new password.',
-  openGraph: mergeOpenGraph({
-    title: 'Reset Password',
-    url: '/reset-password',
-  }),
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
+  return {
+    title: t.auth.resetPasswordTitle,
+    description: t.auth.resetPasswordDescription,
+    openGraph: mergeOpenGraph({
+      title: t.auth.resetPasswordTitle,
+      url: '/reset-password',
+    }),
+  }
 }

@@ -1,9 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
+import { useTranslation } from '../../_providers/Translate'
 import classes from './index.module.scss'
 
 const Promotion = () => {
+  const { t } = useTranslation()
   const [time, setTime] = useState({
     days: 0,
     hours: 0,
@@ -28,30 +30,25 @@ const Promotion = () => {
 
       if (timeDifference === 0) {
         clearInterval(timerInterval)
-        // You can add code here to handle what happens when the target date is reached.
       }
     }, 1000)
 
     return () => {
-      clearInterval(timerInterval) // Cleanup the interval when the component unmounts.
+      clearInterval(timerInterval)
     }
   }, [])
 
   return (
     <section className={classes.promotion}>
       <div className={classes.textBox}>
-        <h3 className={classes.title}>Deals of the Month</h3>
-        <p>
-          Get ready for a shopping experience like never before with our Deals of the Month! Every
-          purchase comes with exclusive perks and offers, making this month a celebration of savvy
-          choices and amazing deals. Don't miss out! 🎁🛒
-        </p>
+        <h3 className={classes.title}>{t('promotion.title')}</h3>
+        <p>{t('promotion.description')}</p>
 
         <ul className={classes.stats}>
-          <StatBox label="Days" value={time.days} />
-          <StatBox label="Hours" value={time.hours} />
-          <StatBox label="Minutes" value={time.minutes} />
-          <StatBox label="Seconds" value={time.seconds} />
+          <StatBox label={t('promotion.days')} value={time.days} />
+          <StatBox label={t('promotion.hours')} value={time.hours} />
+          <StatBox label={t('promotion.minutes')} value={time.minutes} />
+          <StatBox label={t('promotion.seconds')} value={time.seconds} />
         </ul>
       </div>
     </section>

@@ -1,8 +1,8 @@
 import { PRODUCT } from './products'
 
 export const ORDERS = `
-  query Orders {
-    Orders(limit: 300) {
+  query Orders($locale: LocaleInputType) {
+    Orders(limit: 300, locale: $locale) {
       docs {
         id
       }
@@ -11,8 +11,8 @@ export const ORDERS = `
 `
 
 export const ORDER = `
-  query Order($id: String ) {
-    Orders(where: { id: { equals: $id}}) {
+  query Order($id: String, $locale: LocaleInputType) {
+    Orders(where: { id: { equals: $id} }, locale: $locale) {
       docs {
         id
         orderedBy

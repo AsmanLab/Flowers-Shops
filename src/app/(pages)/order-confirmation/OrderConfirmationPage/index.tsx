@@ -7,6 +7,7 @@ import { Button } from '../../../_components/Button'
 import { Message } from '../../../_components/Message'
 import { useCart } from '../../../_providers/Cart'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 export const OrderConfirmationPage: React.FC<{}> = () => {
@@ -20,34 +21,38 @@ export const OrderConfirmationPage: React.FC<{}> = () => {
     clearCart()
   }, [clearCart])
 
+  const { t } = useTranslation()
+
   return (
     <div>
       {error ? (
         <Fragment>
           <Message error={error} />
-          <p>
-            {`Your payment was successful but there was an error processing your order. Please contact us to resolve this issue.`}
-          </p>
+          <p>{t('orderConfirmation.paymentSuccessErrorProcessing')}</p>
           <div className={classes.actions}>
-            <Button href="/account" label="View account" appearance="primary" />
+            <Button href="/account" label={t('orders.viewAccount')} appearance="primary" />
             <Button
-              href={`${process.env.NEXT_PUBLIC_SERVER_URL}/orders`}
-              label="View all orders"
+              href={`${process.env.NEXT_PUBLIC_SERVER_URL}/account/orders`}
+              label={t('orders.viewAllOrders')}
               appearance="secondary"
             />
           </div>
         </Fragment>
       ) : (
         <Fragment>
-          <h1>Thank you for your order!</h1>
+          <h1>{t('orderConfirmation.thankYou')}</h1>
           <p>
-            {`Your order has been confirmed. You will receive an email confirmation shortly. Your order ID is ${orderID}.`}
+            {t('orderConfirmation.orderConfirmed')} {t('orderConfirmation.orderID')} {orderID}.
           </p>
           <div className={classes.actions}>
-            <Button href={`/account/orders/${orderID}`} label="View order" appearance="primary" />
+            <Button
+              href={`/account/orders/${orderID}`}
+              label={t('orders.viewOrder')}
+              appearance="primary"
+            />
             <Button
               href={`${process.env.NEXT_PUBLIC_SERVER_URL}/account/orders`}
-              label="View all orders"
+              label={t('orders.viewAllOrders')}
               appearance="secondary"
             />
           </div>

@@ -9,6 +9,7 @@ import { Input } from '../../../_components/Input'
 import { Message } from '../../../_components/Message'
 import { useAuth } from '../../../_providers/Auth'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 type FormData = {
@@ -22,6 +23,7 @@ export const ResetPasswordForm: React.FC = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const { t } = useTranslation()
 
   const {
     register,
@@ -50,12 +52,12 @@ export const ResetPasswordForm: React.FC = () => {
         await login({ email: json.user.email, password: data.password })
 
         // Redirect them to `/account` with success message in URL
-        router.push('/account?success=Password reset successfully.')
+        router.push(`/account?success=${encodeURIComponent(t('auth.resetPasswordSuccess'))}`)
       } else {
-        setError('There was a problem while resetting your password. Please try again later.')
+        setError(t('auth.resetPasswordError'))
       }
     },
-    [router, login],
+    [router, login, t],
   )
 
   // when Next.js populates token within router,
@@ -70,7 +72,7 @@ export const ResetPasswordForm: React.FC = () => {
       <Input
         name="password"
         type="password"
-        label="New Password"
+        label={t('auth.newPassword')}
         required
         register={register}
         error={errors.password}
@@ -79,7 +81,7 @@ export const ResetPasswordForm: React.FC = () => {
       <Button
         type="submit"
         appearance="primary"
-        label="Reset Password"
+        label={t('auth.resetPasswordButton')}
         className={classes.submit}
       />
     </form>

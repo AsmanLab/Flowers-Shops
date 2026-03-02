@@ -8,10 +8,12 @@ import { HR } from '../../../_components/HR'
 import { RadioButton } from '../../../_components/Radio'
 import { useFilter } from '../../../_providers/Filter'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 const Filters = ({ categories }: { categories: Category[] }) => {
   const { categoryFilters, sort, setCategoryFilters, setSort } = useFilter()
+  const { t } = useTranslation()
 
   const handleCategories = (categoryId: string) => {
     if (categoryFilters.includes(categoryId)) {
@@ -28,7 +30,7 @@ const Filters = ({ categories }: { categories: Category[] }) => {
   return (
     <div className={classes.filters}>
       <div>
-        <h6 className={classes.title}>Product Categories</h6>
+        <h6 className={classes.title}>{t('filters.productCategories')}</h6>
         <div className={classes.categories}>
           {categories.map(category => {
             const isSelected = categoryFilters.includes(category.id)
@@ -45,17 +47,17 @@ const Filters = ({ categories }: { categories: Category[] }) => {
           })}
         </div>
         <HR className={classes.hr} />
-        <h6 className={classes.title}>Sort By</h6>
+        <h6 className={classes.title}>{t('filters.sortBy')}</h6>
         <div className={classes.categories}>
           <RadioButton
-            label="Latest"
+            label={t('filters.latest')}
             value="-createdAt"
             isSelected={sort === '-createdAt'}
             onRadioChange={handleSort}
             groupName="sort"
           />
           <RadioButton
-            label="Oldest"
+            label={t('filters.oldest')}
             value="createdAt"
             isSelected={sort === 'createdAt'}
             onRadioChange={handleSort}

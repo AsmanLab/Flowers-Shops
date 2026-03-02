@@ -12,10 +12,12 @@ export const Footer: GlobalConfig = {
       name: 'copyright',
       label: 'Copyright',
       type: 'text',
+      localized: true,
     },
     {
       name: 'navItems',
       type: 'array',
+      localized: true,
       maxRows: 6,
       fields: [
         link({

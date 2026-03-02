@@ -8,8 +8,8 @@ export const PRODUCT_CATEGORIES = `categories {
 }`
 
 export const CATEGORIES = `
-  query Categories {
-    Categories(limit: 300) {
+  query Categories($locale: LocaleInputType) {
+    Categories(limit: 300, locale: $locale) {
       docs {
         id
         title

@@ -14,10 +14,17 @@ import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function Orders() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view your orders.',
+      t.orders.mustBeLoggedIn,
     )}&redirect=${encodeURIComponent('/orders')}`,
   })
 
@@ -48,9 +55,9 @@ export default async function Orders() {
 
   return (
     <Gutter className={classes.orders}>
-      <h1>Orders</h1>
+      <h1>{t.orders.title}</h1>
       {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-        <p className={classes.noOrders}>You have no orders.</p>
+        <p className={classes.noOrders}>{t.orders.noOrders}</p>
       )}
       <RenderParams />
       {orders && orders.length > 0 && (
@@ -59,12 +66,12 @@ export default async function Orders() {
             <li key={order.id} className={classes.listItem}>
               <Link className={classes.item} href={`/orders/${order.id}`}>
                 <div className={classes.itemContent}>
-                  <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
+                  <h4 className={classes.itemTitle}>{`${t.orders.order} ${order.id}`}</h4>
                   <div className={classes.itemMeta}>
-                    <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
+                    <p>{`${t.orders.orderedOn}: ${formatDateTime(order.createdAt)}`}</p>
                     <p>
-                      {'Total: '}
-                      {new Intl.NumberFormat('en-US', {
+                      {`${t.orders.total}: `}
+                      {new Intl.NumberFormat(locale, {
                         style: 'currency',
                         currency: 'usd',
                       }).format(order.total / 100)}
@@ -73,7 +80,7 @@ export default async function Orders() {
                 </div>
                 <Button
                   appearance="secondary"
-                  label="View Order"
+                  label={t.orders.viewOrder}
                   className={classes.button}
                   el="button"
                 />
@@ -84,16 +91,22 @@ export default async function Orders() {
         </ul>
       )}
       <HR />
-      <Button href="/account" appearance="primary" label="Go to account" />
+      <Button href="/account" appearance="primary" label={t.orders.viewAccount} />
     </Gutter>
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Orders',
-  description: 'Your orders.',
-  openGraph: mergeOpenGraph({
-    title: 'Orders',
-    url: '/orders',
-  }),
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
+  return {
+    title: t.orders.title,
+    description: t.orders.noOrders,
+    openGraph: mergeOpenGraph({
+      title: t.orders.title,
+      url: '/orders',
+    }),
+  }
 }

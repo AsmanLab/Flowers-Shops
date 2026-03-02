@@ -85,3 +85,29 @@
   display: none;
 }
 
+.localeSwitcher {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.localeBtn {
+  background: none;
+  border: 1px solid var(--theme-elevation-200);
+  color: inherit;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--theme-elevation-100);
+  }
+
+  &.active {
+    background-color: var(--theme-elevation-200);
+    border-color: var(--theme-elevation-400);
+    font-weight: bold;
+  }
+}

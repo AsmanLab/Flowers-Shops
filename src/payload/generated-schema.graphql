@@ -1,39 +1,39 @@
 type Query {
-  Page(id: String!, draft: Boolean): Page
-  Pages(draft: Boolean, where: Page_where, limit: Int, page: Int, sort: String): Pages
+  Page(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Page
+  Pages(draft: Boolean, where: Page_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Pages
   docAccessPage(id: String!): pagesDocAccess
-  versionPage(id: String): PageVersion
-  versionsPages(where: versionsPage_where, limit: Int, page: Int, sort: String): versionsPages
-  Product(id: String!, draft: Boolean): Product
-  Products(draft: Boolean, where: Product_where, limit: Int, page: Int, sort: String): Products
+  versionPage(id: String, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): PageVersion
+  versionsPages(where: versionsPage_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): versionsPages
+  Product(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Product
+  Products(draft: Boolean, where: Product_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Products
   docAccessProduct(id: String!): productsDocAccess
-  versionProduct(id: String): ProductVersion
-  versionsProducts(where: versionsProduct_where, limit: Int, page: Int, sort: String): versionsProducts
-  Order(id: String!, draft: Boolean): Order
-  Orders(draft: Boolean, where: Order_where, limit: Int, page: Int, sort: String): Orders
+  versionProduct(id: String, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): ProductVersion
+  versionsProducts(where: versionsProduct_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): versionsProducts
+  Order(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Order
+  Orders(draft: Boolean, where: Order_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Orders
   docAccessOrder(id: String!): ordersDocAccess
-  Media(id: String!, draft: Boolean): Media
-  allMedia(draft: Boolean, where: Media_where, limit: Int, page: Int, sort: String): allMedia
+  Media(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Media
+  allMedia(draft: Boolean, where: Media_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): allMedia
   docAccessMedia(id: String!): mediaDocAccess
-  Category(id: String!, draft: Boolean): Category
-  Categories(draft: Boolean, where: Category_where, limit: Int, page: Int, sort: String): Categories
+  Category(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Category
+  Categories(draft: Boolean, where: Category_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Categories
   docAccessCategory(id: String!): categoriesDocAccess
-  User(id: String!, draft: Boolean): User
-  Users(draft: Boolean, where: User_where, limit: Int, page: Int, sort: String): Users
+  User(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): User
+  Users(draft: Boolean, where: User_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Users
   docAccessUser(id: String!): usersDocAccess
   meUser: usersMe
   initializedUser: Boolean
-  Redirect(id: String!, draft: Boolean): Redirect
-  Redirects(draft: Boolean, where: Redirect_where, limit: Int, page: Int, sort: String): Redirects
+  Redirect(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Redirect
+  Redirects(draft: Boolean, where: Redirect_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Redirects
   docAccessRedirect(id: String!): redirectsDocAccess
-  PayloadPreference(id: String!, draft: Boolean): PayloadPreference
-  PayloadPreferences(draft: Boolean, where: PayloadPreference_where, limit: Int, page: Int, sort: String): PayloadPreferences
+  PayloadPreference(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): PayloadPreference
+  PayloadPreferences(draft: Boolean, where: PayloadPreference_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): PayloadPreferences
   docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
-  Settings(draft: Boolean): Settings
+  Settings(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Settings
   docAccessSettings: settingsDocAccess
-  Header(draft: Boolean): Header
+  Header(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Header
   docAccessHeader: headerDocAccess
-  Footer(draft: Boolean): Footer
+  Footer(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Footer
   docAccessFooter: footerDocAccess
   Access: Access
 }
@@ -43,7 +43,7 @@ type Page {
   title: String
   publishedOn: DateTime
   hero: Page_Hero
-  layout: [Page_Layout!]!
+  layout: [Page_Layout!]
   slug: String
   meta: Page_Meta
   updatedAt: DateTime
@@ -60,7 +60,7 @@ type Page_Hero {
   type: Page_Hero_type
   richText(depth: Int): JSON
   links: [Page_Hero_Links!]
-  media(where: Page_Hero_Media_where): Media
+  media(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Page_Hero_Media_where): Media
 }
 
 enum Page_Hero_type {
@@ -84,10 +84,10 @@ type Page_Hero_Links {
 type Page_Hero_Links_Link {
   type: Page_Hero_Links_Link_type
   newTab: Boolean
-  reference: Page_Hero_Links_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Page_Hero_Links_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: Page_Hero_Links_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Page_Hero_Links_Link_Icon_where): Media
   appearance: Page_Hero_Links_Link_appearance
 }
 
@@ -106,6 +106,17 @@ enum Page_Hero_Links_Link_Reference_RelationTo {
 }
 
 union Page_Hero_Links_Link_Reference = Page
+
+enum LocaleInputType {
+  en
+  ru
+}
+
+enum FallbackLocaleInputType {
+  en
+  ru
+  none
+}
 
 type Media {
   id: String
@@ -263,6 +274,8 @@ input Page_Hero_Links_Link_Icon_where_and {
   width: Page_Hero_Links_Link_Icon_width_operator
   height: Page_Hero_Links_Link_Icon_height_operator
   id: Page_Hero_Links_Link_Icon_id_operator
+  AND: [Page_Hero_Links_Link_Icon_where_and]
+  OR: [Page_Hero_Links_Link_Icon_where_or]
 }
 
 input Page_Hero_Links_Link_Icon_where_or {
@@ -277,6 +290,8 @@ input Page_Hero_Links_Link_Icon_where_or {
   width: Page_Hero_Links_Link_Icon_width_operator
   height: Page_Hero_Links_Link_Icon_height_operator
   id: Page_Hero_Links_Link_Icon_id_operator
+  AND: [Page_Hero_Links_Link_Icon_where_and]
+  OR: [Page_Hero_Links_Link_Icon_where_or]
 }
 
 enum Page_Hero_Links_Link_appearance {
@@ -427,6 +442,8 @@ input Page_Hero_Media_where_and {
   width: Page_Hero_Media_width_operator
   height: Page_Hero_Media_height_operator
   id: Page_Hero_Media_id_operator
+  AND: [Page_Hero_Media_where_and]
+  OR: [Page_Hero_Media_where_or]
 }
 
 input Page_Hero_Media_where_or {
@@ -441,6 +458,8 @@ input Page_Hero_Media_where_or {
   width: Page_Hero_Media_width_operator
   height: Page_Hero_Media_height_operator
   id: Page_Hero_Media_id_operator
+  AND: [Page_Hero_Media_where_and]
+  OR: [Page_Hero_Media_where_or]
 }
 
 union Page_Layout = Cta | Content | MediaBlock | Archive
@@ -462,10 +481,10 @@ type Cta_Links {
 type Cta_Links_Link {
   type: Cta_Links_Link_type
   newTab: Boolean
-  reference: Cta_Links_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Cta_Links_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: Cta_Links_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Cta_Links_Link_Icon_where): Media
   appearance: Cta_Links_Link_appearance
 }
 
@@ -627,6 +646,8 @@ input Cta_Links_Link_Icon_where_and {
   width: Cta_Links_Link_Icon_width_operator
   height: Cta_Links_Link_Icon_height_operator
   id: Cta_Links_Link_Icon_id_operator
+  AND: [Cta_Links_Link_Icon_where_and]
+  OR: [Cta_Links_Link_Icon_where_or]
 }
 
 input Cta_Links_Link_Icon_where_or {
@@ -641,6 +662,8 @@ input Cta_Links_Link_Icon_where_or {
   width: Cta_Links_Link_Icon_width_operator
   height: Cta_Links_Link_Icon_height_operator
   id: Cta_Links_Link_Icon_id_operator
+  AND: [Cta_Links_Link_Icon_where_and]
+  OR: [Cta_Links_Link_Icon_where_or]
 }
 
 enum Cta_Links_Link_appearance {
@@ -674,10 +697,10 @@ enum Content_Columns_size {
 type Content_Columns_Link {
   type: Content_Columns_Link_type
   newTab: Boolean
-  reference: Content_Columns_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Content_Columns_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: Content_Columns_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Content_Columns_Link_Icon_where): Media
   appearance: Content_Columns_Link_appearance
 }
 
@@ -839,6 +862,8 @@ input Content_Columns_Link_Icon_where_and {
   width: Content_Columns_Link_Icon_width_operator
   height: Content_Columns_Link_Icon_height_operator
   id: Content_Columns_Link_Icon_id_operator
+  AND: [Content_Columns_Link_Icon_where_and]
+  OR: [Content_Columns_Link_Icon_where_or]
 }
 
 input Content_Columns_Link_Icon_where_or {
@@ -853,6 +878,8 @@ input Content_Columns_Link_Icon_where_or {
   width: Content_Columns_Link_Icon_width_operator
   height: Content_Columns_Link_Icon_height_operator
   id: Content_Columns_Link_Icon_id_operator
+  AND: [Content_Columns_Link_Icon_where_and]
+  OR: [Content_Columns_Link_Icon_where_or]
 }
 
 enum Content_Columns_Link_appearance {
@@ -864,7 +891,7 @@ enum Content_Columns_Link_appearance {
 type MediaBlock {
   invertBackground: Boolean
   position: MediaBlock_position
-  media(where: MediaBlock_Media_where): Media
+  media(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: MediaBlock_Media_where): Media
   id: String
   blockName: String
   blockType: String
@@ -1017,6 +1044,8 @@ input MediaBlock_Media_where_and {
   width: MediaBlock_Media_width_operator
   height: MediaBlock_Media_height_operator
   id: MediaBlock_Media_id_operator
+  AND: [MediaBlock_Media_where_and]
+  OR: [MediaBlock_Media_where_or]
 }
 
 input MediaBlock_Media_where_or {
@@ -1031,16 +1060,18 @@ input MediaBlock_Media_where_or {
   width: MediaBlock_Media_width_operator
   height: MediaBlock_Media_height_operator
   id: MediaBlock_Media_id_operator
+  AND: [MediaBlock_Media_where_and]
+  OR: [MediaBlock_Media_where_or]
 }
 
 type Archive {
   introContent(depth: Int): JSON
   populateBy: Archive_populateBy
   relationTo: Archive_relationTo
-  categories: [Category!]
+  categories(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Category!]
   limit: Float
-  selectedDocs: [Archive_SelectedDocs_Relationship!]
-  populatedDocs: [Archive_PopulatedDocs_Relationship!]
+  selectedDocs(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Archive_SelectedDocs_Relationship!]
+  populatedDocs(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Archive_PopulatedDocs_Relationship!]
   populatedDocsTotal: Float
   id: String
   blockName: String
@@ -1058,9 +1089,9 @@ enum Archive_relationTo {
 
 type Category {
   id: String
-  title: String!
-  media(where: Category_Media_where): Media
-  parent: Category
+  title: String
+  media(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Category_Media_where): Media
+  parent(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Category
   breadcrumbs: [Category_Breadcrumbs!]
   updatedAt: DateTime
   createdAt: DateTime
@@ -1208,6 +1239,8 @@ input Category_Media_where_and {
   width: Category_Media_width_operator
   height: Category_Media_height_operator
   id: Category_Media_id_operator
+  AND: [Category_Media_where_and]
+  OR: [Category_Media_where_or]
 }
 
 input Category_Media_where_or {
@@ -1222,10 +1255,12 @@ input Category_Media_where_or {
   width: Category_Media_width_operator
   height: Category_Media_height_operator
   id: Category_Media_id_operator
+  AND: [Category_Media_where_and]
+  OR: [Category_Media_where_or]
 }
 
 type Category_Breadcrumbs {
-  doc: Category
+  doc(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Category
   url: String
   label: String
   id: String
@@ -1251,8 +1286,8 @@ type Product {
   priceJSON: String
   enablePaywall: Boolean
   paywall: [Product_Paywall!]
-  categories: [Category!]
-  relatedProducts: [Product!]
+  categories(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Category!]
+  relatedProducts(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Product!]
   slug: String
   skipSync: Boolean
   meta: Product_Meta
@@ -1268,7 +1303,7 @@ union Product_Paywall = Cta | Content | MediaBlock | Archive
 type Product_Meta {
   title: String
   description: String
-  image(where: Product_Meta_Image_where): Media
+  image(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Product_Meta_Image_where): Media
 }
 
 input Product_Meta_Image_where {
@@ -1413,6 +1448,8 @@ input Product_Meta_Image_where_and {
   width: Product_Meta_Image_width_operator
   height: Product_Meta_Image_height_operator
   id: Product_Meta_Image_id_operator
+  AND: [Product_Meta_Image_where_and]
+  OR: [Product_Meta_Image_where_or]
 }
 
 input Product_Meta_Image_where_or {
@@ -1427,6 +1464,8 @@ input Product_Meta_Image_where_or {
   width: Product_Meta_Image_width_operator
   height: Product_Meta_Image_height_operator
   id: Product_Meta_Image_id_operator
+  AND: [Product_Meta_Image_where_and]
+  OR: [Product_Meta_Image_where_or]
 }
 
 enum Product__status {
@@ -1448,7 +1487,7 @@ union Archive_PopulatedDocs = Product
 type Page_Meta {
   title: String
   description: String
-  image(where: Page_Meta_Image_where): Media
+  image(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Page_Meta_Image_where): Media
 }
 
 input Page_Meta_Image_where {
@@ -1593,6 +1632,8 @@ input Page_Meta_Image_where_and {
   width: Page_Meta_Image_width_operator
   height: Page_Meta_Image_height_operator
   id: Page_Meta_Image_id_operator
+  AND: [Page_Meta_Image_where_and]
+  OR: [Page_Meta_Image_where_or]
 }
 
 input Page_Meta_Image_where_or {
@@ -1607,6 +1648,8 @@ input Page_Meta_Image_where_or {
   width: Page_Meta_Image_width_operator
   height: Page_Meta_Image_height_operator
   id: Page_Meta_Image_id_operator
+  AND: [Page_Meta_Image_where_and]
+  OR: [Page_Meta_Image_where_or]
 }
 
 enum Page__status {
@@ -1888,6 +1931,8 @@ input Page_where_and {
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
+  AND: [Page_where_and]
+  OR: [Page_where_or]
 }
 
 input Page_where_or {
@@ -1912,6 +1957,8 @@ input Page_where_or {
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
+  AND: [Page_where_and]
+  OR: [Page_where_or]
 }
 
 type pagesDocAccess {
@@ -2621,7 +2668,7 @@ type PagesReadVersionsDocAccess {
 }
 
 type PageVersion {
-  parent: Page
+  parent(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Page
   version: PageVersion_Version
   createdAt: DateTime
   updatedAt: DateTime
@@ -2633,7 +2680,7 @@ type PageVersion_Version {
   title: String
   publishedOn: DateTime
   hero: PageVersion_Version_Hero
-  layout: [PageVersion_Version_Layout!]!
+  layout: [PageVersion_Version_Layout!]
   slug: String
   meta: PageVersion_Version_Meta
   updatedAt: DateTime
@@ -2645,7 +2692,7 @@ type PageVersion_Version_Hero {
   type: PageVersion_Version_Hero_type
   richText(depth: Int): JSON
   links: [PageVersion_Version_Hero_Links!]
-  media(where: PageVersion_Version_Hero_Media_where): Media
+  media(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: PageVersion_Version_Hero_Media_where): Media
 }
 
 enum PageVersion_Version_Hero_type {
@@ -2664,10 +2711,10 @@ type PageVersion_Version_Hero_Links {
 type PageVersion_Version_Hero_Links_Link {
   type: PageVersion_Version_Hero_Links_Link_type
   newTab: Boolean
-  reference: PageVersion_Version_Hero_Links_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): PageVersion_Version_Hero_Links_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: PageVersion_Version_Hero_Links_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: PageVersion_Version_Hero_Links_Link_Icon_where): Media
   appearance: PageVersion_Version_Hero_Links_Link_appearance
 }
 
@@ -2829,6 +2876,8 @@ input PageVersion_Version_Hero_Links_Link_Icon_where_and {
   width: PageVersion_Version_Hero_Links_Link_Icon_width_operator
   height: PageVersion_Version_Hero_Links_Link_Icon_height_operator
   id: PageVersion_Version_Hero_Links_Link_Icon_id_operator
+  AND: [PageVersion_Version_Hero_Links_Link_Icon_where_and]
+  OR: [PageVersion_Version_Hero_Links_Link_Icon_where_or]
 }
 
 input PageVersion_Version_Hero_Links_Link_Icon_where_or {
@@ -2843,6 +2892,8 @@ input PageVersion_Version_Hero_Links_Link_Icon_where_or {
   width: PageVersion_Version_Hero_Links_Link_Icon_width_operator
   height: PageVersion_Version_Hero_Links_Link_Icon_height_operator
   id: PageVersion_Version_Hero_Links_Link_Icon_id_operator
+  AND: [PageVersion_Version_Hero_Links_Link_Icon_where_and]
+  OR: [PageVersion_Version_Hero_Links_Link_Icon_where_or]
 }
 
 enum PageVersion_Version_Hero_Links_Link_appearance {
@@ -2993,6 +3044,8 @@ input PageVersion_Version_Hero_Media_where_and {
   width: PageVersion_Version_Hero_Media_width_operator
   height: PageVersion_Version_Hero_Media_height_operator
   id: PageVersion_Version_Hero_Media_id_operator
+  AND: [PageVersion_Version_Hero_Media_where_and]
+  OR: [PageVersion_Version_Hero_Media_where_or]
 }
 
 input PageVersion_Version_Hero_Media_where_or {
@@ -3007,6 +3060,8 @@ input PageVersion_Version_Hero_Media_where_or {
   width: PageVersion_Version_Hero_Media_width_operator
   height: PageVersion_Version_Hero_Media_height_operator
   id: PageVersion_Version_Hero_Media_id_operator
+  AND: [PageVersion_Version_Hero_Media_where_and]
+  OR: [PageVersion_Version_Hero_Media_where_or]
 }
 
 union PageVersion_Version_Layout = Cta | Content | MediaBlock | Archive
@@ -3014,7 +3069,7 @@ union PageVersion_Version_Layout = Cta | Content | MediaBlock | Archive
 type PageVersion_Version_Meta {
   title: String
   description: String
-  image(where: PageVersion_Version_Meta_Image_where): Media
+  image(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: PageVersion_Version_Meta_Image_where): Media
 }
 
 input PageVersion_Version_Meta_Image_where {
@@ -3159,6 +3214,8 @@ input PageVersion_Version_Meta_Image_where_and {
   width: PageVersion_Version_Meta_Image_width_operator
   height: PageVersion_Version_Meta_Image_height_operator
   id: PageVersion_Version_Meta_Image_id_operator
+  AND: [PageVersion_Version_Meta_Image_where_and]
+  OR: [PageVersion_Version_Meta_Image_where_or]
 }
 
 input PageVersion_Version_Meta_Image_where_or {
@@ -3173,6 +3230,8 @@ input PageVersion_Version_Meta_Image_where_or {
   width: PageVersion_Version_Meta_Image_width_operator
   height: PageVersion_Version_Meta_Image_height_operator
   id: PageVersion_Version_Meta_Image_id_operator
+  AND: [PageVersion_Version_Meta_Image_where_and]
+  OR: [PageVersion_Version_Meta_Image_where_or]
 }
 
 enum PageVersion_Version__status {
@@ -3499,6 +3558,8 @@ input versionsPage_where_and {
   updatedAt: versionsPage_updatedAt_operator
   latest: versionsPage_latest_operator
   id: versionsPage_id_operator
+  AND: [versionsPage_where_and]
+  OR: [versionsPage_where_or]
 }
 
 input versionsPage_where_or {
@@ -3527,6 +3588,8 @@ input versionsPage_where_or {
   updatedAt: versionsPage_updatedAt_operator
   latest: versionsPage_latest_operator
   id: versionsPage_id_operator
+  AND: [versionsPage_where_and]
+  OR: [versionsPage_where_or]
 }
 
 type Products {
@@ -3734,6 +3797,8 @@ input Product_where_and {
   createdAt: Product_createdAt_operator
   _status: Product__status_operator
   id: Product_id_operator
+  AND: [Product_where_and]
+  OR: [Product_where_or]
 }
 
 input Product_where_or {
@@ -3753,6 +3818,8 @@ input Product_where_or {
   createdAt: Product_createdAt_operator
   _status: Product__status_operator
   id: Product_id_operator
+  AND: [Product_where_and]
+  OR: [Product_where_or]
 }
 
 type productsDocAccess {
@@ -4277,7 +4344,7 @@ type ProductsReadVersionsDocAccess {
 }
 
 type ProductVersion {
-  parent: Product
+  parent(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Product
   version: ProductVersion_Version
   createdAt: DateTime
   updatedAt: DateTime
@@ -4293,8 +4360,8 @@ type ProductVersion_Version {
   priceJSON: String
   enablePaywall: Boolean
   paywall: [ProductVersion_Version_Paywall!]
-  categories: [Category!]
-  relatedProducts: [Product!]
+  categories(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Category!]
+  relatedProducts(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Product!]
   slug: String
   skipSync: Boolean
   meta: ProductVersion_Version_Meta
@@ -4310,7 +4377,7 @@ union ProductVersion_Version_Paywall = Cta | Content | MediaBlock | Archive
 type ProductVersion_Version_Meta {
   title: String
   description: String
-  image(where: ProductVersion_Version_Meta_Image_where): Media
+  image(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: ProductVersion_Version_Meta_Image_where): Media
 }
 
 input ProductVersion_Version_Meta_Image_where {
@@ -4455,6 +4522,8 @@ input ProductVersion_Version_Meta_Image_where_and {
   width: ProductVersion_Version_Meta_Image_width_operator
   height: ProductVersion_Version_Meta_Image_height_operator
   id: ProductVersion_Version_Meta_Image_id_operator
+  AND: [ProductVersion_Version_Meta_Image_where_and]
+  OR: [ProductVersion_Version_Meta_Image_where_or]
 }
 
 input ProductVersion_Version_Meta_Image_where_or {
@@ -4469,6 +4538,8 @@ input ProductVersion_Version_Meta_Image_where_or {
   width: ProductVersion_Version_Meta_Image_width_operator
   height: ProductVersion_Version_Meta_Image_height_operator
   id: ProductVersion_Version_Meta_Image_id_operator
+  AND: [ProductVersion_Version_Meta_Image_where_and]
+  OR: [ProductVersion_Version_Meta_Image_where_or]
 }
 
 enum ProductVersion_Version__status {
@@ -4726,6 +4797,8 @@ input versionsProduct_where_and {
   updatedAt: versionsProduct_updatedAt_operator
   latest: versionsProduct_latest_operator
   id: versionsProduct_id_operator
+  AND: [versionsProduct_where_and]
+  OR: [versionsProduct_where_or]
 }
 
 input versionsProduct_where_or {
@@ -4749,11 +4822,13 @@ input versionsProduct_where_or {
   updatedAt: versionsProduct_updatedAt_operator
   latest: versionsProduct_latest_operator
   id: versionsProduct_id_operator
+  AND: [versionsProduct_where_and]
+  OR: [versionsProduct_where_or]
 }
 
 type Order {
   id: String
-  orderedBy: User
+  orderedBy(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): User
   stripePaymentIntentID: String
   total: Float!
   items: [Order_Items!]
@@ -4765,7 +4840,7 @@ type User {
   id: String
   name: String
   roles: [User_roles!]
-  purchases: [Product!]
+  purchases(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): [Product!]
   stripeCustomerID: String
   cart: User_Cart
   skipSync: Boolean
@@ -4791,7 +4866,7 @@ type User_Cart {
 }
 
 type CartItems {
-  product: Product
+  product(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Product
   quantity: Float
   id: String
 }
@@ -4802,7 +4877,7 @@ A field whose value conforms to the standard internet email address format as sp
 scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
 
 type Order_Items {
-  product: Product
+  product(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Product
   price: Float
   quantity: Float
   id: String
@@ -4949,6 +5024,8 @@ input Order_where_and {
   updatedAt: Order_updatedAt_operator
   createdAt: Order_createdAt_operator
   id: Order_id_operator
+  AND: [Order_where_and]
+  OR: [Order_where_or]
 }
 
 input Order_where_or {
@@ -4962,6 +5039,8 @@ input Order_where_or {
   updatedAt: Order_updatedAt_operator
   createdAt: Order_createdAt_operator
   id: Order_id_operator
+  AND: [Order_where_and]
+  OR: [Order_where_or]
 }
 
 type ordersDocAccess {
@@ -5395,6 +5474,8 @@ input Media_where_and {
   width: Media_width_operator
   height: Media_height_operator
   id: Media_id_operator
+  AND: [Media_where_and]
+  OR: [Media_where_or]
 }
 
 input Media_where_or {
@@ -5409,6 +5490,8 @@ input Media_where_or {
   width: Media_width_operator
   height: Media_height_operator
   id: Media_id_operator
+  AND: [Media_where_and]
+  OR: [Media_where_or]
 }
 
 type mediaDocAccess {
@@ -5822,6 +5905,8 @@ input Category_where_and {
   updatedAt: Category_updatedAt_operator
   createdAt: Category_createdAt_operator
   id: Category_id_operator
+  AND: [Category_where_and]
+  OR: [Category_where_or]
 }
 
 input Category_where_or {
@@ -5835,6 +5920,8 @@ input Category_where_or {
   updatedAt: Category_updatedAt_operator
   createdAt: Category_createdAt_operator
   id: Category_id_operator
+  AND: [Category_where_and]
+  OR: [Category_where_or]
 }
 
 type categoriesDocAccess {
@@ -6280,6 +6367,8 @@ input User_where_and {
   createdAt: User_createdAt_operator
   email: User_email_operator
   id: User_id_operator
+  AND: [User_where_and]
+  OR: [User_where_or]
 }
 
 input User_where_or {
@@ -6295,6 +6384,8 @@ input User_where_or {
   createdAt: User_createdAt_operator
   email: User_email_operator
   id: User_id_operator
+  AND: [User_where_and]
+  OR: [User_where_or]
 }
 
 type usersDocAccess {
@@ -6695,7 +6786,7 @@ type Redirect {
 
 type Redirect_To {
   type: Redirect_To_type
-  reference: Redirect_To_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Redirect_To_Reference_Relationship
   url: String
 }
 
@@ -6826,6 +6917,8 @@ input Redirect_where_and {
   updatedAt: Redirect_updatedAt_operator
   createdAt: Redirect_createdAt_operator
   id: Redirect_id_operator
+  AND: [Redirect_where_and]
+  OR: [Redirect_where_or]
 }
 
 input Redirect_where_or {
@@ -6836,6 +6929,8 @@ input Redirect_where_or {
   updatedAt: Redirect_updatedAt_operator
   createdAt: Redirect_createdAt_operator
   id: Redirect_id_operator
+  AND: [Redirect_where_and]
+  OR: [Redirect_where_or]
 }
 
 type redirectsDocAccess {
@@ -7043,7 +7138,7 @@ type RedirectsDeleteDocAccess {
 
 type PayloadPreference {
   id: String
-  user: PayloadPreference_User_Relationship!
+  user(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): PayloadPreference_User_Relationship!
   key: String
   value: JSON
   updatedAt: DateTime
@@ -7156,6 +7251,8 @@ input PayloadPreference_where_and {
   updatedAt: PayloadPreference_updatedAt_operator
   createdAt: PayloadPreference_createdAt_operator
   id: PayloadPreference_id_operator
+  AND: [PayloadPreference_where_and]
+  OR: [PayloadPreference_where_or]
 }
 
 input PayloadPreference_where_or {
@@ -7165,6 +7262,8 @@ input PayloadPreference_where_or {
   updatedAt: PayloadPreference_updatedAt_operator
   createdAt: PayloadPreference_createdAt_operator
   id: PayloadPreference_id_operator
+  AND: [PayloadPreference_where_and]
+  OR: [PayloadPreference_where_or]
 }
 
 type payload_preferencesDocAccess {
@@ -7319,7 +7418,7 @@ type PayloadPreferencesDeleteDocAccess {
 }
 
 type Settings {
-  productsPage: Page
+  productsPage(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Page
   updatedAt: DateTime
   createdAt: DateTime
 }
@@ -7429,10 +7528,10 @@ type Header_NavItems {
 type Header_NavItems_Link {
   type: Header_NavItems_Link_type
   newTab: Boolean
-  reference: Header_NavItems_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Header_NavItems_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: Header_NavItems_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Header_NavItems_Link_Icon_where): Media
 }
 
 enum Header_NavItems_Link_type {
@@ -7593,6 +7692,8 @@ input Header_NavItems_Link_Icon_where_and {
   width: Header_NavItems_Link_Icon_width_operator
   height: Header_NavItems_Link_Icon_height_operator
   id: Header_NavItems_Link_Icon_id_operator
+  AND: [Header_NavItems_Link_Icon_where_and]
+  OR: [Header_NavItems_Link_Icon_where_or]
 }
 
 input Header_NavItems_Link_Icon_where_or {
@@ -7607,6 +7708,8 @@ input Header_NavItems_Link_Icon_where_or {
   width: Header_NavItems_Link_Icon_width_operator
   height: Header_NavItems_Link_Icon_height_operator
   id: Header_NavItems_Link_Icon_id_operator
+  AND: [Header_NavItems_Link_Icon_where_and]
+  OR: [Header_NavItems_Link_Icon_where_or]
 }
 
 type headerDocAccess {
@@ -7901,7 +8004,7 @@ type HeaderUpdateDocAccess {
 }
 
 type Footer {
-  copyright: String!
+  copyright: String
   navItems: [Footer_NavItems!]
   updatedAt: DateTime
   createdAt: DateTime
@@ -7915,10 +8018,10 @@ type Footer_NavItems {
 type Footer_NavItems_Link {
   type: Footer_NavItems_Link_type
   newTab: Boolean
-  reference: Footer_NavItems_Link_Reference_Relationship
+  reference(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): Footer_NavItems_Link_Reference_Relationship
   url: String
   label: String
-  icon(where: Footer_NavItems_Link_Icon_where): Media
+  icon(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Footer_NavItems_Link_Icon_where): Media
 }
 
 enum Footer_NavItems_Link_type {
@@ -8079,6 +8182,8 @@ input Footer_NavItems_Link_Icon_where_and {
   width: Footer_NavItems_Link_Icon_width_operator
   height: Footer_NavItems_Link_Icon_height_operator
   id: Footer_NavItems_Link_Icon_id_operator
+  AND: [Footer_NavItems_Link_Icon_where_and]
+  OR: [Footer_NavItems_Link_Icon_where_or]
 }
 
 input Footer_NavItems_Link_Icon_where_or {
@@ -8093,6 +8198,8 @@ input Footer_NavItems_Link_Icon_where_or {
   width: Footer_NavItems_Link_Icon_width_operator
   height: Footer_NavItems_Link_Icon_height_operator
   id: Footer_NavItems_Link_Icon_id_operator
+  AND: [Footer_NavItems_Link_Icon_where_and]
+  OR: [Footer_NavItems_Link_Icon_where_or]
 }
 
 type footerDocAccess {
@@ -11901,25 +12008,25 @@ type FooterUpdateAccess {
 }
 
 type Mutation {
-  createPage(data: mutationPageInput!, draft: Boolean): Page
-  updatePage(id: String!, autosave: Boolean, data: mutationPageUpdateInput!, draft: Boolean): Page
+  createPage(data: mutationPageInput!, draft: Boolean, locale: LocaleInputType): Page
+  updatePage(id: String!, autosave: Boolean, data: mutationPageUpdateInput!, draft: Boolean, locale: LocaleInputType): Page
   deletePage(id: String!): Page
   restoreVersionPage(id: String): Page
-  createProduct(data: mutationProductInput!, draft: Boolean): Product
-  updateProduct(id: String!, autosave: Boolean, data: mutationProductUpdateInput!, draft: Boolean): Product
+  createProduct(data: mutationProductInput!, draft: Boolean, locale: LocaleInputType): Product
+  updateProduct(id: String!, autosave: Boolean, data: mutationProductUpdateInput!, draft: Boolean, locale: LocaleInputType): Product
   deleteProduct(id: String!): Product
   restoreVersionProduct(id: String): Product
-  createOrder(data: mutationOrderInput!, draft: Boolean): Order
-  updateOrder(id: String!, autosave: Boolean, data: mutationOrderUpdateInput!, draft: Boolean): Order
+  createOrder(data: mutationOrderInput!, draft: Boolean, locale: LocaleInputType): Order
+  updateOrder(id: String!, autosave: Boolean, data: mutationOrderUpdateInput!, draft: Boolean, locale: LocaleInputType): Order
   deleteOrder(id: String!): Order
-  createMedia(data: mutationMediaInput!, draft: Boolean): Media
-  updateMedia(id: String!, autosave: Boolean, data: mutationMediaUpdateInput!, draft: Boolean): Media
+  createMedia(data: mutationMediaInput!, draft: Boolean, locale: LocaleInputType): Media
+  updateMedia(id: String!, autosave: Boolean, data: mutationMediaUpdateInput!, draft: Boolean, locale: LocaleInputType): Media
   deleteMedia(id: String!): Media
-  createCategory(data: mutationCategoryInput!, draft: Boolean): Category
-  updateCategory(id: String!, autosave: Boolean, data: mutationCategoryUpdateInput!, draft: Boolean): Category
+  createCategory(data: mutationCategoryInput!, draft: Boolean, locale: LocaleInputType): Category
+  updateCategory(id: String!, autosave: Boolean, data: mutationCategoryUpdateInput!, draft: Boolean, locale: LocaleInputType): Category
   deleteCategory(id: String!): Category
-  createUser(data: mutationUserInput!, draft: Boolean): User
-  updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean): User
+  createUser(data: mutationUserInput!, draft: Boolean, locale: LocaleInputType): User
+  updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean, locale: LocaleInputType): User
   deleteUser(id: String!): User
   refreshTokenUser(token: String): usersRefreshedUser
   logoutUser: String
@@ -11928,19 +12035,19 @@ type Mutation {
   forgotPasswordUser(disableEmail: Boolean, email: String!, expiration: Int): Boolean!
   resetPasswordUser(password: String, token: String): usersResetPassword
   verifyEmailUser(token: String): Boolean
-  createRedirect(data: mutationRedirectInput!, draft: Boolean): Redirect
-  updateRedirect(id: String!, autosave: Boolean, data: mutationRedirectUpdateInput!, draft: Boolean): Redirect
+  createRedirect(data: mutationRedirectInput!, draft: Boolean, locale: LocaleInputType): Redirect
+  updateRedirect(id: String!, autosave: Boolean, data: mutationRedirectUpdateInput!, draft: Boolean, locale: LocaleInputType): Redirect
   deleteRedirect(id: String!): Redirect
-  createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean): PayloadPreference
-  updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!, draft: Boolean): PayloadPreference
+  createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
+  updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
-  updateSettings(data: mutationSettingsInput!, draft: Boolean): Settings
-  updateHeader(data: mutationHeaderInput!, draft: Boolean): Header
-  updateFooter(data: mutationFooterInput!, draft: Boolean): Footer
+  updateSettings(data: mutationSettingsInput!, draft: Boolean, locale: LocaleInputType): Settings
+  updateHeader(data: mutationHeaderInput!, draft: Boolean, locale: LocaleInputType): Header
+  updateFooter(data: mutationFooterInput!, draft: Boolean, locale: LocaleInputType): Footer
 }
 
 input mutationPageInput {
-  title: String!
+  title: String
   publishedOn: String
   hero: mutationPage_HeroInput!
   layout: JSON
@@ -11976,7 +12083,7 @@ input mutationPage_Hero_Links_LinkInput {
   newTab: Boolean
   reference: Page_Hero_Links_Link_ReferenceRelationshipInput
   url: String
-  label: String!
+  label: String
   icon: String
   appearance: Page_Hero_Links_Link_appearance_MutationInput
 }
@@ -12044,7 +12151,7 @@ input mutationPageUpdate_Hero_Links_LinkInput {
   newTab: Boolean
   reference: PageUpdate_Hero_Links_Link_ReferenceRelationshipInput
   url: String
-  label: String!
+  label: String
   icon: String
   appearance: PageUpdate_Hero_Links_Link_appearance_MutationInput
 }
@@ -12076,7 +12183,7 @@ enum PageUpdate__status_MutationInput {
 }
 
 input mutationProductInput {
-  title: String!
+  title: String
   publishedOn: String
   layout: JSON
   stripeProductID: String
@@ -12192,7 +12299,7 @@ input mutationMediaUpdateInput {
 }
 
 input mutationCategoryInput {
-  title: String!
+  title: String
   media: String
   parent: String
   breadcrumbs: [mutationCategory_BreadcrumbsInput]
@@ -12415,7 +12522,7 @@ input mutationHeader_NavItems_LinkInput {
   newTab: Boolean
   reference: Header_NavItems_Link_ReferenceRelationshipInput
   url: String
-  label: String!
+  label: String
   icon: String
 }
 
@@ -12429,7 +12536,7 @@ enum Header_NavItems_Link_ReferenceRelationshipInputRelationTo {
 }
 
 input mutationFooterInput {
-  copyright: String!
+  copyright: String
   navItems: [mutationFooter_NavItemsInput]
   updatedAt: String
   createdAt: String
@@ -12445,7 +12552,7 @@ input mutationFooter_NavItems_LinkInput {
   newTab: Boolean
   reference: Footer_NavItems_Link_ReferenceRelationshipInput
   url: String
-  label: String!
+  label: String
   icon: String
 }
 

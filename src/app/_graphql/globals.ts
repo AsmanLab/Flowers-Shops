@@ -9,8 +9,12 @@ export const HEADER = `
 `
 
 export const HEADER_QUERY = `
-query Header {
-  ${HEADER}
+query Header($locale: LocaleInputType) {
+  Header(locale: $locale) {
+    navItems {
+      link ${LINK_FIELDS({ disableAppearance: true })}
+		}
+  }
 }
 `
 
@@ -24,8 +28,13 @@ export const FOOTER = `
 `
 
 export const FOOTER_QUERY = `
-query Footer {
-  ${FOOTER}
+query Footer($locale: LocaleInputType) {
+  Footer(locale: $locale) {
+    copyright
+    navItems {
+      link ${LINK_FIELDS({ disableAppearance: true })}
+		}
+  }
 }
 `
 
@@ -38,7 +47,11 @@ export const SETTINGS = `
 `
 
 export const SETTINGS_QUERY = `
-query Settings {
-  ${SETTINGS}
+query Settings($locale: LocaleInputType) {
+  Settings(locale: $locale) {
+    productsPage {
+      slug
+    }
+  }
 }
 `

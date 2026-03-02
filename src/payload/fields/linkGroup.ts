@@ -14,6 +14,7 @@ const linkGroup: LinkGroupType = ({ overrides = {}, appearances } = {}) => {
   const generatedLinkGroup: Field = {
     name: 'links',
     type: 'array',
+    localized: true,
     fields: [
       link({
         appearances,

@@ -48,13 +48,24 @@ export const seed = async (payload: Payload): Promise<void> => {
       // Rotate through image-1.jpg, image-2.jpg, image-3.jpg
       const imageNum = (index % 3) + 1
       const imageFile = `image-${imageNum}.jpg`
+      const uniquePath = path.resolve(__dirname, `temp-floral-${index + 1}.jpg`)
 
-      return payload.create({
+      // Copy to unique temp file to avoid duplicate filename errors
+      fs.copyFileSync(path.resolve(__dirname, imageFile), uniquePath)
+
+      const mediaDoc = await payload.create({
         collection: 'media',
-        filePath: path.resolve(__dirname, imageFile),
+        filePath: uniquePath,
         data: mediaData as any,
       })
-    })
+
+      // Clean up the temp file
+      if (fs.existsSync(uniquePath)) {
+        fs.unlinkSync(uniquePath)
+      }
+
+      return mediaDoc
+    }),
   )
 
   const mediaIDs = seededMedia.map(doc => doc.id)

@@ -3,8 +3,8 @@ import { PRODUCT_CATEGORIES } from './categories'
 import { META } from './meta'
 
 export const PRODUCTS = `
-  query Products {
-    Products(limit: 300) {
+  query Products($locale: LocaleInputType) {
+    Products(limit: 300, locale: $locale) {
       docs {
         slug
       }
@@ -13,8 +13,8 @@ export const PRODUCTS = `
 `
 
 export const PRODUCT = `
-  query Product($slug: String, $draft: Boolean) {
-    Products(where: { slug: { equals: $slug}}, limit: 1, draft: $draft) {
+  query Product($slug: String, $draft: Boolean, $locale: LocaleInputType) {
+    Products(where: { slug: { equals: $slug}}, limit: 1, draft: $draft, locale: $locale) {
       docs {
         id
         title
@@ -41,8 +41,8 @@ export const PRODUCT = `
 `
 
 export const PRODUCT_PAYWALL = `
-  query Product($slug: String, $draft: Boolean) {
-    Products(where: { slug: { equals: $slug}}, limit: 1, draft: $draft) {
+  query Product($slug: String, $draft: Boolean, $locale: LocaleInputType) {
+    Products(where: { slug: { equals: $slug}}, limit: 1, draft: $draft, locale: $locale) {
       docs {
         paywall {
           ${CALL_TO_ACTION}

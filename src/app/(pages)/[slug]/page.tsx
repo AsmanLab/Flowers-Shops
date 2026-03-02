@@ -1,14 +1,16 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { draftMode } from 'next/headers'
+import { draftMode, cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 
-import { Category, Page } from '../../../payload/payload-types'
+
+import { Category, Page as PageType } from '../../../payload/payload-types'
 import { staticHome } from '../../../payload/seed/home-static'
 import { fetchDoc } from '../../_api/fetchDoc'
 import { fetchDocs } from '../../_api/fetchDocs'
 import { Blocks } from '../../_components/Blocks'
 import { Gutter } from '../../_components/Gutter'
+import { getTranslation, Locale } from '../../_locales'
 import { Hero } from '../../_components/Hero'
 import { generateMeta } from '../../_utilities/generateMeta'
 
@@ -28,11 +30,11 @@ import classes from './index.module.scss'
 export default async function Page({ params: { slug = 'home' } }) {
   const { isEnabled: isDraftMode } = draftMode()
 
-  let page: Page | null = null
+  let page: PageType | null = null
   let categories: Category[] | null = null
 
   try {
-    page = await fetchDoc<Page>({
+    page = await fetchDoc<PageType>({
       collection: 'pages',
       slug,
       draft: isDraftMode,
@@ -46,11 +48,34 @@ export default async function Page({ params: { slug = 'home' } }) {
     // console.error(error)
   }
 
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const trans = getTranslation(locale)
+
   // if no `home` page exists, render a static one using dummy content
   // you should delete this code once you have a home page in the CMS
   // this is really only useful for those who are demoing this template
   if (!page && slug === 'home') {
-    page = staticHome
+    page = {
+      ...staticHome,
+      meta: {
+        ...staticHome.meta,
+        title: trans.home.title,
+        description: trans.home.description,
+      },
+      hero: {
+        ...staticHome.hero,
+        richText: [
+          {
+            children: [{ text: trans.home.title }],
+            type: 'h1',
+          },
+          {
+            children: [{ text: trans.home.description }],
+          },
+        ],
+      },
+    }
   }
 
   if (!page) {
@@ -66,7 +91,7 @@ export default async function Page({ params: { slug = 'home' } }) {
           <Hero {...hero} />
 
           <Gutter className={classes.home}>
-            <Categories categories={categories} />
+            <Categories categories={categories} locale={locale} />
             <Promotion />
           </Gutter>
         </section>
@@ -85,7 +110,7 @@ export default async function Page({ params: { slug = 'home' } }) {
 
 export async function generateStaticParams() {
   try {
-    const pages = await fetchDocs<Page>('pages')
+    const pages = await fetchDocs<PageType>('pages')
     return pages?.map(({ slug }) => slug)
   } catch (error) {
     return []
@@ -95,10 +120,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params: { slug = 'home' } }): Promise<Metadata> {
   const { isEnabled: isDraftMode } = draftMode()
 
-  let page: Page | null = null
+  let page: PageType | null = null
 
   try {
-    page = await fetchDoc<Page>({
+    page = await fetchDoc<PageType>({
       collection: 'pages',
       slug,
       draft: isDraftMode,

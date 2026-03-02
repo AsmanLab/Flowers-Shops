@@ -11,11 +11,16 @@ import CreateAccountForm from './CreateAccountForm'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function CreateAccount() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   await getMeUser({
-    validUserRedirect: `/account?warning=${encodeURIComponent(
-      'Cannot create a new account while logged in, please log out and try again.',
-    )}`,
+    validUserRedirect: `/account?warning=${encodeURIComponent(t.auth.alreadyLoggedInCreateAccount)}`,
   })
 
   return (
@@ -37,11 +42,11 @@ export default async function CreateAccount() {
           <RenderParams className={classes.params} />
 
           <div className={classes.formTitle}>
-            <h3>Create Account</h3>
+            <h3>{t.auth.createAccountTitle}</h3>
             <Image src="/assets/icons/hand.png" alt="hand" width={30} height={30} />
           </div>
 
-          <p>Please enter details</p>
+          <p>{t.auth.pleaseEnterDetails}</p>
 
           <CreateAccountForm />
         </div>
@@ -50,11 +55,17 @@ export default async function CreateAccount() {
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Account',
-  description: 'Create an account or log in to your existing account.',
-  openGraph: mergeOpenGraph({
-    title: 'Account',
-    url: '/account',
-  }),
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
+  return {
+    title: t.auth.createAccountTitle,
+    description: t.auth.pleaseEnterDetails,
+    openGraph: mergeOpenGraph({
+      title: t.auth.createAccountTitle,
+      url: '/account',
+    }),
+  }
 }

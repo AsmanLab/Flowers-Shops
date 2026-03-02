@@ -40,6 +40,7 @@ export const hero: Field = {
       ],
     },
     richText({
+      localized: true,
       admin: {
         elements: ['h1', largeBody, label, 'link'],
         leaves: [],
@@ -47,6 +48,7 @@ export const hero: Field = {
     }),
     linkGroup({
       overrides: {
+        localized: true,
         maxRows: 2,
       },
     }),

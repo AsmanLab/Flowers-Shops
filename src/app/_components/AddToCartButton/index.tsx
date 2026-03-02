@@ -7,6 +7,7 @@ import { Product } from '../../../payload/payload-types'
 import { useCart } from '../../_providers/Cart'
 import { Button, Props } from '../Button'
 
+import { useTranslation } from '../../_providers/Translate'
 import classes from './index.module.scss'
 
 export const AddToCartButton: React.FC<{
@@ -26,11 +27,13 @@ export const AddToCartButton: React.FC<{
     setIsInCart(isProductInCart(product))
   }, [isProductInCart, product, cart])
 
+  const { t } = useTranslation()
+
   return (
     <Button
       href={isInCart ? '/cart' : undefined}
       type={!isInCart ? 'button' : undefined}
-      label={isInCart ? `✓ View in cart` : `Add to cart`}
+      label={isInCart ? `✓ ${t('products.viewInCart')}` : t('products.addToCart')}
       el={isInCart ? 'link' : undefined}
       appearance={appearance}
       className={[
@@ -44,13 +47,13 @@ export const AddToCartButton: React.FC<{
       onClick={
         !isInCart
           ? () => {
-              addItemToCart({
-                product,
-                quantity,
-              })
+            addItemToCart({
+              product,
+              quantity,
+            })
 
-              router.push('/cart')
-            }
+            router.push('/cart')
+          }
           : undefined
       }
     />

@@ -9,13 +9,19 @@ import { LowImpactHero } from '../../_heros/LowImpact'
 import { getMeUser } from '../../_utilities/getMeUser'
 import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
 import { CheckoutPage } from './CheckoutPage'
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
 
 import classes from './index.module.scss'
 
 export default async function Checkout() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to checkout.',
+      t.checkout.mustBeLoggedIn,
     )}&redirect=${encodeURIComponent('/checkout')}`,
   })
 

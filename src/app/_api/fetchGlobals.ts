@@ -2,7 +2,7 @@ import type { Footer, Header, Settings } from '../../payload/payload-types'
 import { FOOTER_QUERY, HEADER_QUERY, SETTINGS_QUERY } from '../_graphql/globals'
 import { GRAPHQL_API_URL } from './shared'
 
-export async function fetchSettings(): Promise<Settings> {
+export async function fetchSettings(locale?: string): Promise<Settings> {
   if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
 
   const settings = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
@@ -13,6 +13,9 @@ export async function fetchSettings(): Promise<Settings> {
     cache: 'no-store',
     body: JSON.stringify({
       query: SETTINGS_QUERY,
+      variables: {
+        locale,
+      },
     }),
   })
     ?.then(res => {
@@ -27,7 +30,7 @@ export async function fetchSettings(): Promise<Settings> {
   return settings
 }
 
-export async function fetchHeader(): Promise<Header> {
+export async function fetchHeader(locale?: string): Promise<Header> {
   if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
 
   const header = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
@@ -38,6 +41,9 @@ export async function fetchHeader(): Promise<Header> {
     cache: 'no-store',
     body: JSON.stringify({
       query: HEADER_QUERY,
+      variables: {
+        locale,
+      },
     }),
   })
     ?.then(res => {
@@ -52,7 +58,7 @@ export async function fetchHeader(): Promise<Header> {
   return header
 }
 
-export async function fetchFooter(): Promise<Footer> {
+export async function fetchFooter(locale?: string): Promise<Footer> {
   if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
 
   const footer = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
@@ -62,6 +68,9 @@ export async function fetchFooter(): Promise<Footer> {
     },
     body: JSON.stringify({
       query: FOOTER_QUERY,
+      variables: {
+        locale,
+      },
     }),
   })
     .then(res => {
@@ -84,9 +93,12 @@ export const fetchGlobals = async (): Promise<{
   // initiate requests in parallel, then wait for them to resolve
   // this will eagerly start to the fetch requests at the same time
   // see https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
-  const settingsData = fetchSettings()
-  const headerData = fetchHeader()
-  const footerData = fetchFooter()
+  const { cookies } = await import('next/headers')
+  const locale = cookies().get('locale')?.value || 'en'
+
+  const settingsData = fetchSettings(locale)
+  const headerData = fetchHeader(locale)
+  const footerData = fetchFooter(locale)
 
   const [settings, header, footer]: [Settings, Header, Footer] = await Promise.all([
     await settingsData,

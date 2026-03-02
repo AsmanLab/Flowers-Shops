@@ -16,9 +16,15 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    preview: doc => {
+    preview: (doc, { locale }) => {
+      const localeCode = typeof locale === 'string' ? locale : locale?.code
+
+      const path = `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/${
+        doc.slug !== 'home' ? doc.slug : ''
+      }${localeCode ? `?locale=${localeCode}` : ''}`
+
       return `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/api/preview?url=${encodeURIComponent(
-        `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/${doc.slug !== 'home' ? doc.slug : ''}`,
+        path,
       )}&secret=${process.env.PAYLOAD_PUBLIC_DRAFT_SECRET}`
     },
   },
@@ -40,6 +46,7 @@ export const Pages: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'publishedOn',
@@ -75,6 +82,7 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               required: true,
+              localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive],
             },
           ],

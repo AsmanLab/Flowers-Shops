@@ -10,6 +10,7 @@ import { Message } from '../../../_components/Message'
 import { priceFromJSON } from '../../../_components/Price'
 import { useCart } from '../../../_providers/Cart'
 
+import { useTranslation } from '../../../_providers/Translate'
 import classes from './index.module.scss'
 
 export const CheckoutForm: React.FC<{}> = () => {
@@ -19,6 +20,8 @@ export const CheckoutForm: React.FC<{}> = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const router = useRouter()
   const { cart, cartTotal } = useCart()
+
+  const { t } = useTranslation()
 
   const handleSubmit = useCallback(
     async e => {
@@ -65,7 +68,7 @@ export const CheckoutForm: React.FC<{}> = () => {
               }),
             })
 
-            if (!orderReq.ok) throw new Error(orderReq.statusText || 'Something went wrong.')
+            if (!orderReq.ok) throw new Error(orderReq.statusText || t('checkout.somethingWentWrong'))
 
             const {
               error: errorFromRes,
@@ -87,12 +90,12 @@ export const CheckoutForm: React.FC<{}> = () => {
           }
         }
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Something went wrong.'
-        setError(`Error while submitting payment: ${msg}`)
+        const msg = err instanceof Error ? err.message : t('checkout.somethingWentWrong')
+        setError(`${t('checkout.errorSubmittingPayment')}: ${msg}`)
         setIsLoading(false)
       }
     },
-    [stripe, elements, router, cart, cartTotal],
+    [stripe, elements, router, cart, cartTotal, t],
   )
 
   return (
@@ -100,9 +103,9 @@ export const CheckoutForm: React.FC<{}> = () => {
       {error && <Message error={error} />}
       <PaymentElement />
       <div className={classes.actions}>
-        <Button label="Back to cart" href="/cart" appearance="secondary" />
+        <Button label={t('checkout.backToCart')} href="/cart" appearance="secondary" />
         <Button
-          label={isLoading ? 'Loading...' : 'Checkout'}
+          label={isLoading ? t('general.loading') : t('general.checkout')}
           type="submit"
           appearance="primary"
           disabled={!stripe || isLoading}

@@ -11,9 +11,16 @@ import LoginForm from './LoginForm'
 
 import classes from './index.module.scss'
 
+import { cookies } from 'next/headers'
+import { getTranslation, Locale } from '../../_locales'
+
 export default async function Login() {
+  const cookieStore = cookies()
+  const locale = (cookieStore.get('locale')?.value || 'en') as Locale
+  const t = getTranslation(locale)
+
   await getMeUser({
-    validUserRedirect: `/account?warning=${encodeURIComponent('You are already logged in.')}`,
+    validUserRedirect: `/account?warning=${encodeURIComponent(t.auth.alreadyLoggedIn)}`,
   })
 
   return (
@@ -35,11 +42,11 @@ export default async function Login() {
           <RenderParams className={classes.params} />
 
           <div className={classes.formTitle}>
-            <h3>Welcome</h3>
+            <h3>{t.auth.welcome}</h3>
             <Image src="/assets/icons/hand.png" alt="hand" width={30} height={30} />
           </div>
 
-          <p>Please login here</p>
+          <p>{t.auth.pleaseLogin}</p>
 
           <LoginForm />
         </div>

@@ -112,6 +112,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
           label: 'Label',
           type: 'text',
           required: true,
+          localized: true,
           admin: {
             width: '50%',
           },
