@@ -19,7 +19,7 @@ const Products: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'stripeProductID', '_status'],
     preview: (doc, { locale }) => {
-      const localeCode = typeof locale === 'string' ? locale : locale?.code
+      const localeCode = locale
 
       const path = `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/products/${doc.slug}${
         localeCode ? `?locale=${localeCode}` : ''

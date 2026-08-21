@@ -1,26 +1,31 @@
-FROM node:18.8-alpine as base
+FROM node:18-alpine AS base
 
-FROM base as builder
+FROM base AS builder
 
 WORKDIR /home/node/app
-COPY package*.json ./
-
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 COPY . .
-RUN yarn install
 RUN yarn build
 
-FROM base as runtime
+FROM base AS runtime
 
 ENV NODE_ENV=production
-ENV PAYLOAD_CONFIG_PATH=dist/payload.config.js
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PAYLOAD_CONFIG_PATH=dist/payload/payload.config.js
 
 WORKDIR /home/node/app
-COPY package*.json  ./
+COPY package.json ./
 COPY yarn.lock ./
 
-RUN yarn install --production
+RUN yarn install --production --frozen-lockfile
 COPY --from=builder /home/node/app/dist ./dist
-COPY --from=builder /home/node/app/build ./build
+COPY --from=builder /home/node/app/.next ./.next
+COPY --from=builder /home/node/app/public ./public
+COPY --from=builder /home/node/app/media ./media
+COPY --from=builder /home/node/app/next.config.js ./next.config.js
+COPY --from=builder /home/node/app/csp.js ./csp.js
+COPY --from=builder /home/node/app/redirects.js ./redirects.js
 
 EXPOSE 3000
 

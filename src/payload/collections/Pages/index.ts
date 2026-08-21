@@ -17,7 +17,7 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     preview: (doc, { locale }) => {
-      const localeCode = typeof locale === 'string' ? locale : locale?.code
+      const localeCode = locale
 
       const path = `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/${
         doc.slug !== 'home' ? doc.slug : ''
