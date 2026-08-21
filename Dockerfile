@@ -7,6 +7,15 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
 
+# Keep the demo catalog media in the immutable image so Render restarts do not
+# remove the files created by the seed script on its ephemeral filesystem.
+RUN cp src/payload/seed/image-1.jpg media/temp-floral-1.jpg \
+  && cp src/payload/seed/image-2.jpg media/temp-floral-2.jpg \
+  && cp src/payload/seed/image-3.jpg media/temp-floral-3.jpg \
+  && cp src/payload/seed/image-1.jpg media/temp-floral-4.jpg \
+  && cp src/payload/seed/image-2.jpg media/temp-floral-5.jpg \
+  && cp src/payload/seed/image-3.jpg media/temp-floral-6.jpg
+
 ARG DATABASE_URI
 ARG PAYLOAD_SECRET
 ARG PAYLOAD_PUBLIC_SERVER_URL
