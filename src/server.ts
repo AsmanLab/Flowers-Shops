@@ -29,6 +29,18 @@ const start = async (): Promise<void> => {
     process.exit()
   }
 
+  if (process.env.PAYLOAD_AUTO_SEED === 'true' && !process.env.NEXT_BUILD) {
+    const { totalDocs } = await payload.find({
+      collection: 'products',
+      limit: 1,
+    })
+
+    if (totalDocs === 0) {
+      payload.logger.info('Product catalog is empty; seeding bundled flower catalog...')
+      await seed(payload)
+    }
+  }
+
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
       payload.logger.info(`Next.js is now building...`)
