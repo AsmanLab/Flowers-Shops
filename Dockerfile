@@ -14,7 +14,13 @@ RUN cp src/payload/seed/image-1.jpg media/temp-floral-1.jpg \
   && cp src/payload/seed/image-3.jpg media/temp-floral-3.jpg \
   && cp src/payload/seed/image-1.jpg media/temp-floral-4.jpg \
   && cp src/payload/seed/image-2.jpg media/temp-floral-5.jpg \
-  && cp src/payload/seed/image-3.jpg media/temp-floral-6.jpg
+  && cp src/payload/seed/image-3.jpg media/temp-floral-6.jpg \
+  && cp src/payload/seed/image-1.jpg media/temp-floral-7.jpg \
+  && cp src/payload/seed/image-2.jpg media/temp-floral-8.jpg \
+  && cp src/payload/seed/image-3.jpg media/temp-floral-9.jpg \
+  && cp src/payload/seed/image-1.jpg media/temp-floral-10.jpg \
+  && cp src/payload/seed/image-2.jpg media/temp-floral-11.jpg \
+  && cp src/payload/seed/image-3.jpg media/temp-floral-12.jpg
 
 ARG DATABASE_URI
 ARG PAYLOAD_SECRET
